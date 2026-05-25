@@ -7,282 +7,68 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     :root{
-      --pd: #1F6F5F; --pm: #2FA084; --ag: #6FCF97; --neu: #EEEEEE;
-      --white: #FFFFFF; --dark: #1A1A1A; --muted: #555555;
-      --warn-y: #FFF8E1; --warn-b: #F0A500;
-      --fd: 'Nirmala UI','Segoe UI','Arial Unicode MS',sans-serif;
-      --fb: 'Nirmala UI','Segoe UI',Arial,sans-serif;
-      --fm: 'Nirmala UI','Consolas','Courier New',monospace;
+      --pd:#1F6F5F;--pm:#2FA084;--ag:#6FCF97;--neu:#EEEEEE;
+      --white:#FFFFFF;--dark:#1A1A1A;--muted:#555555;
+      --fd:'Nirmala UI','Segoe UI','Arial Unicode MS',sans-serif;
+      --fb:'Nirmala UI','Segoe UI',Arial,sans-serif;
+      --fm:'Nirmala UI','Consolas','Courier New',monospace;
     }
     body{font-family:var(--fb);background:var(--neu);min-height:100vh;}
-
-    /* ── Header ── */
-    .header{
-      background:var(--pd);
-      padding:0 32px;
-      height:64px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      box-shadow:0 2px 12px rgba(0,0,0,0.15);
-    }
-    .header-logo{
-      font-family:var(--fd);
-      font-size:22px;
-      font-weight:700;
-      color:var(--white);
-      display:flex;
-      align-items:center;
-      gap:10px;
-      text-decoration:none;
-    }
-    .header-user{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-    .user-avatar{
-      width:38px;height:38px;
-      border-radius:50%;
-      background:var(--ag);
-      display:flex;align-items:center;justify-content:center;
-      font-family:var(--fd);
-      font-weight:700;font-size:15px;
-      color:var(--pd);
-      border:2px solid rgba(255,255,255,0.3);
-    }
-    .user-name{
-      font-family:var(--fb);
-      font-size:14px;color:rgba(255,255,255,0.85);
-    }
-    .btn-signout{
-      background:rgba(255,255,255,0.12);
-      border:1px solid rgba(255,255,255,0.25);
-      color:white;
-      padding:7px 14px;
-      border-radius:8px;
-      font-family:var(--fd);
-      font-size:13px;
-      font-weight:600;
-      cursor:pointer;
-      transition:all 0.2s;
-    }
+    .header{background:var(--pd);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.15);}
+    .header-logo{font-family:var(--fd);font-size:22px;font-weight:700;color:#fff;display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .header-user{display:flex;align-items:center;gap:12px;}
+    .user-avatar{width:38px;height:38px;border-radius:50%;background:var(--ag);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:700;font-size:15px;color:var(--pd);border:2px solid rgba(255,255,255,0.3);}
+    .user-name{font-size:14px;color:rgba(255,255,255,0.85);}
+    .btn-signout{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:white;padding:7px 14px;border-radius:8px;font-family:var(--fd);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
     .btn-signout:hover{background:rgba(255,255,255,0.22);}
-
-    /* ── Main ── */
-    .main{
-      max-width:900px;
-      margin:0 auto;
-      padding:48px 24px;
-    }
-    .welcome{
-      text-align:center;
-      margin-bottom:48px;
-    }
-    .welcome h1{
-      font-family:var(--fd);
-      font-size:32px;
-      font-weight:700;
-      color:var(--pd);
-      margin-bottom:10px;
-    }
-    .welcome p{
-      font-family:var(--fb);
-      font-size:16px;
-      color:var(--muted);
-    }
-
-    /* ── Cards ── */
-    .cards{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:24px;
-      margin-bottom:48px;
-    }
-    .card{
-      background:var(--white);
-      border-radius:20px;
-      padding:36px 32px;
-      box-shadow:0 4px 24px rgba(0,0,0,0.07);
-      border:2px solid transparent;
-      transition:all 0.25s;
-      cursor:pointer;
-    }
-    .card:hover{
-      border-color:var(--pm);
-      transform:translateY(-3px);
-      box-shadow:0 8px 32px rgba(47,160,132,0.15);
-    }
+    .main{max-width:900px;margin:0 auto;padding:48px 24px;}
+    .welcome{text-align:center;margin-bottom:48px;}
+    .welcome h1{font-family:var(--fd);font-size:32px;font-weight:700;color:var(--pd);margin-bottom:10px;}
+    .welcome p{font-size:16px;color:var(--muted);}
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px;}
+    .card{background:var(--white);border-radius:20px;padding:36px 32px;box-shadow:0 4px 24px rgba(0,0,0,0.07);border:2px solid transparent;transition:all 0.25s;cursor:pointer;}
+    .card:hover{border-color:var(--pm);transform:translateY(-3px);box-shadow:0 8px 32px rgba(47,160,132,0.15);}
     .card-icon{font-size:48px;margin-bottom:16px;display:block;}
-    .card h2{
-      font-family:var(--fd);
-      font-size:20px;
-      font-weight:700;
-      color:var(--dark);
-      margin-bottom:10px;
-    }
-    .card p{
-      font-family:var(--fb);
-      font-size:14px;
-      color:var(--muted);
-      line-height:1.65;
-      margin-bottom:24px;
-    }
-    .btn-card{
-      width:100%;
-      padding:13px;
-      border:none;
-      border-radius:10px;
-      font-family:var(--fd);
-      font-size:14px;
-      font-weight:700;
-      cursor:pointer;
-      transition:all 0.2s;
-    }
-    .btn-create{background:var(--pm);color:var(--white);}
+    .card h2{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--dark);margin-bottom:10px;}
+    .card p{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:24px;}
+    .btn-card{width:100%;padding:13px;border:none;border-radius:10px;font-family:var(--fd);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+    .btn-create{background:var(--pm);color:#fff;}
     .btn-create:hover{background:var(--pd);}
     .btn-join{background:var(--neu);color:var(--dark);border:2px solid var(--pm);}
-    .btn-join:hover{background:var(--pm);color:var(--white);}
-
-    /* ── My Groups ── */
-    .section-title{
-      font-family:var(--fd);
-      font-size:18px;
-      font-weight:700;
-      color:var(--pd);
-      margin-bottom:16px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
+    .btn-join:hover{background:var(--pm);color:#fff;}
+    .section-title{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--pd);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
     .groups-list{display:flex;flex-direction:column;gap:12px;}
-    .group-item{
-      background:var(--white);
-      border-radius:14px;
-      padding:18px 22px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      box-shadow:0 2px 10px rgba(0,0,0,0.05);
-      cursor:pointer;
-      transition:all 0.2s;
-      border:1px solid #E8E8E8;
-    }
+    .group-item{background:var(--white);border-radius:14px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,0.05);cursor:pointer;transition:all 0.2s;border:1px solid #E8E8E8;}
     .group-item:hover{border-color:var(--pm);box-shadow:0 4px 16px rgba(47,160,132,0.12);}
     .group-info{display:flex;align-items:center;gap:14px;}
     .group-pot{font-size:28px;}
-    .group-name{
-      font-family:var(--fd);
-      font-size:16px;
-      font-weight:700;
-      color:var(--dark);
-    }
-    .group-meta{
-      font-family:var(--fm);
-      font-size:12px;
-      color:var(--muted);
-      margin-top:3px;
-    }
-    .group-badge{
-      padding:5px 12px;
-      border-radius:20px;
-      font-family:var(--fd);
-      font-size:12px;
-      font-weight:700;
-    }
+    .group-name{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--dark);}
+    .group-meta{font-family:var(--fm);font-size:12px;color:var(--muted);margin-top:3px;}
+    .group-badge{padding:5px 12px;border-radius:20px;font-family:var(--fd);font-size:12px;font-weight:700;}
     .badge-admin{background:#E8F5E9;color:#2E7D32;}
     .badge-member{background:#E3F2FD;color:#1565C0;}
     .badge-arrow{font-size:18px;color:var(--pm);margin-left:8px;}
-
-    .empty-state{
-      text-align:center;
-      padding:40px;
-      background:var(--white);
-      border-radius:14px;
-      color:var(--muted);
-      font-family:var(--fb);
-      font-size:15px;
-      border:2px dashed #D0D0D0;
-    }
+    .empty-state{text-align:center;padding:40px;background:var(--white);border-radius:14px;color:var(--muted);font-size:15px;border:2px dashed #D0D0D0;}
     .empty-state .empty-icon{font-size:40px;display:block;margin-bottom:12px;}
-
-    /* ── Modal ── */
-    .overlay{
-      position:fixed;inset:0;
-      background:rgba(0,0,0,0.5);
-      display:flex;align-items:center;justify-content:center;
-      z-index:200;padding:20px;
-    }
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;}
     .overlay.hidden{display:none;}
-    .modal{
-      background:var(--white);
-      border-radius:20px;
-      padding:36px 40px;
-      max-width:480px;width:100%;
-      box-shadow:0 24px 64px rgba(0,0,0,0.25);
-      animation:slideUp 0.25s ease;
-    }
-    @keyframes slideUp{
-      from{transform:translateY(20px);opacity:0;}
-      to{transform:translateY(0);opacity:1;}
-    }
-    .modal h3{
-      font-family:var(--fd);
-      font-size:20px;font-weight:700;
-      color:var(--pd);margin-bottom:20px;
-    }
+    .modal{background:var(--white);border-radius:20px;padding:36px 40px;max-width:480px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.25);animation:slideUp 0.25s ease;}
+    @keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+    .modal h3{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--pd);margin-bottom:20px;}
     .form-group{margin-bottom:18px;}
-    .form-group label{
-      display:block;
-      font-family:var(--fd);
-      font-size:13px;font-weight:600;
-      color:var(--dark);margin-bottom:7px;
-    }
-    .form-group input{
-      width:100%;
-      padding:12px 14px;
-      border:2px solid var(--neu);
-      border-radius:10px;
-      font-family:var(--fb);
-      font-size:14px;
-      outline:none;
-      transition:border-color 0.2s;
-    }
+    .form-group label{display:block;font-family:var(--fd);font-size:13px;font-weight:600;color:var(--dark);margin-bottom:7px;}
+    .form-group input{width:100%;padding:12px 14px;border:2px solid var(--neu);border-radius:10px;font-family:var(--fb);font-size:14px;outline:none;transition:border-color 0.2s;}
     .form-group input:focus{border-color:var(--pm);}
     .modal-btns{display:flex;gap:12px;margin-top:24px;}
-    .btn-modal-cancel{
-      flex:1;padding:13px;
-      border:2px solid var(--neu);
-      background:var(--white);
-      border-radius:10px;
-      font-family:var(--fd);font-size:14px;font-weight:600;
-      cursor:pointer;color:var(--muted);
-      transition:all 0.2s;
-    }
-    .btn-modal-cancel:hover{border-color:#ccc;}
-    .btn-modal-confirm{
-      flex:2;padding:13px;
-      border:none;
-      background:var(--pm);
-      color:var(--white);
-      border-radius:10px;
-      font-family:var(--fd);font-size:14px;font-weight:700;
-      cursor:pointer;
-      transition:all 0.2s;
-    }
+    .btn-modal-cancel{flex:1;padding:13px;border:2px solid var(--neu);background:var(--white);border-radius:10px;font-family:var(--fd);font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);}
+    .btn-modal-confirm{flex:2;padding:13px;border:none;background:var(--pm);color:#fff;border-radius:10px;font-family:var(--fd);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;}
     .btn-modal-confirm:hover{background:var(--pd);}
-
-    @media(max-width:600px){
-      .cards{grid-template-columns:1fr;}
-      .header{padding:0 16px;}
-      .main{padding:24px 16px;}
-    }
+    @media(max-width:600px){.cards{grid-template-columns:1fr;}.header{padding:0 16px;}.main{padding:24px 16px;}}
     .hidden{display:none!important;}
   </style>
 </head>
 <body>
 
-  <!-- Header -->
   <header class="header">
     <a class="header-logo" href="index.html">🫕 Dropot</a>
     <div class="header-user">
@@ -292,15 +78,11 @@
     </div>
   </header>
 
-  <!-- Main -->
   <main class="main">
-
     <div class="welcome">
       <h1 id="welcome-msg">Welcome back 👋</h1>
       <p>Create a new group or join one using an invite link.</p>
     </div>
-
-    <!-- Action Cards -->
     <div class="cards">
       <div class="card" onclick="openCreateModal()">
         <span class="card-icon">🫕</span>
@@ -315,8 +97,6 @@
         <button class="btn-card btn-join">Join via Invite Link →</button>
       </div>
     </div>
-
-    <!-- My Groups -->
     <div class="section-title">🫧 My Groups</div>
     <div class="groups-list" id="groups-list">
       <div class="empty-state">
@@ -324,10 +104,9 @@
         You haven't joined any groups yet.<br/>Create one or use an invite link to get started.
       </div>
     </div>
-
   </main>
 
-  <!-- Create Group Modal -->
+  <!-- Create Modal -->
   <div class="overlay hidden" id="create-modal">
     <div class="modal">
       <h3>🫕 Create a New Group</h3>
@@ -346,7 +125,7 @@
     </div>
   </div>
 
-  <!-- Join Group Modal -->
+  <!-- Join Modal -->
   <div class="overlay hidden" id="join-modal">
     <div class="modal">
       <h3>🔗 Join a Group</h3>
@@ -361,47 +140,50 @@
     </div>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Non-module functions accessible from HTML -->
+  <script>
+    function openCreateModal() { document.getElementById('create-modal').classList.remove('hidden'); }
+    function openJoinModal()   { document.getElementById('join-modal').classList.remove('hidden'); }
+    function closeModals() {
+      document.getElementById('create-modal').classList.add('hidden');
+      document.getElementById('join-modal').classList.add('hidden');
+    }
+    function openGroup(id) { window.location.href = 'group.html?id=' + id; }
+    function signOut() {
+      sessionStorage.clear();
+      import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js").then(m => {
+        const auth = m.getAuth();
+        m.signOut(auth).then(() => window.location.href = 'index.html');
+      });
+    }
+  </script>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut as fbSignOut, GoogleAuthProvider }
+    import { getAuth, onAuthStateChanged, signOut as fbSignOut }
       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp }
+    import { getFirestore, collection, addDoc, getDocs, query,
+             where, serverTimestamp }
       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // 🔧 REPLACE with your Firebase config
     const firebaseConfig = {
-  apiKey: "AIzaSyDLF8iDm7DbRtcW6804FmV8vK_pmu0hcjM",
-  authDomain: "dropot-ac097.firebaseapp.com",
-  projectId: "dropot-ac097",
-  storageBucket: "dropot-ac097.firebasestorage.app",
-  messagingSenderId: "405186629882",
-  appId: "1:405186629882:web:fcd300d6d54153ce71f943",
-  measurementId: "G-XFEL27XXZ2"
-};
+      apiKey: "AIzaSyDLF8iDm7DbRtcW6804FmV8vK_pmu0hcjM",
+      authDomain: "dropot-ac097.firebaseapp.com",
+      projectId: "dropot-ac097",
+      storageBucket: "dropot-ac097.firebasestorage.app",
+      messagingSenderId: "405186629882",
+      appId: "1:405186629882:web:fcd300d6d54153ce71f943"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
-
+    const db   = getFirestore(app);
     let currentUser = null;
 
-    // Auth check
     onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = 'index.html';
-        return;
-      }
+      if (!user) { window.location.href = 'index.html'; return; }
+      if (!sessionStorage.getItem("dropot_drive_token")) { window.location.href = 'index.html'; return; }
       currentUser = user;
-
-      // Get Drive token from sessionStorage
-      const driveToken = sessionStorage.getItem("dropot_drive_token");
-      if (!driveToken) {
-        // Token expired — sign in again
-        window.location.href = 'index.html';
-        return;
-      }
-
       const name = user.displayName || user.email;
       document.getElementById('user-name').textContent = name;
       document.getElementById('welcome-msg').textContent = `Welcome back, ${name.split(' ')[0]} 👋`;
@@ -409,68 +191,60 @@
       await loadGroups();
     });
 
-    // Load groups
     async function loadGroups() {
       const list = document.getElementById('groups-list');
       try {
-        const q = query(collection(db, 'groups'),
-          where('memberIds', 'array-contains', currentUser.uid));
+        const q    = query(collection(db,'groups'), where('memberIds','array-contains',currentUser.uid));
         const snap = await getDocs(q);
         if (snap.empty) return;
         list.innerHTML = '';
         snap.forEach(doc => {
-          const g = doc.data();
+          const g       = doc.data();
           const isAdmin = g.adminId === currentUser.uid;
+          const date    = g.createdAt?.toDate ? g.createdAt.toDate().toLocaleDateString() : 'recently';
           list.innerHTML += `
             <div class="group-item" onclick="openGroup('${doc.id}')">
               <div class="group-info">
                 <span class="group-pot">🫕</span>
                 <div>
                   <div class="group-name">${g.name}</div>
-                  <div class="group-meta">${g.memberIds.length} member${g.memberIds.length > 1 ? 's' : ''} · Created ${new Date(g.createdAt?.toDate()).toLocaleDateString()}</div>
+                  <div class="group-meta">${g.memberIds.length} member${g.memberIds.length>1?'s':''} · Created ${date}</div>
                 </div>
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
-                <span class="group-badge ${isAdmin ? 'badge-admin' : 'badge-member'}">${isAdmin ? 'Admin' : 'Member'}</span>
+                <span class="group-badge ${isAdmin?'badge-admin':'badge-member'}">${isAdmin?'Admin':'Member'}</span>
                 <span class="badge-arrow">›</span>
               </div>
             </div>`;
         });
-      } catch(e) {
-        console.error('Error loading groups:', e);
-      }
+      } catch(e) { console.error('Error loading groups:', e); }
     }
 
-    // Create group
     window.createGroup = async function() {
       const name = document.getElementById('group-name-input').value.trim();
       if (!name) { alert('Please enter a group name.'); return; }
       const desc = document.getElementById('group-desc-input').value.trim();
       try {
-        const docRef = await addDoc(collection(db, 'groups'), {
+        const docRef = await addDoc(collection(db,'groups'), {
           name, desc,
-          adminId: currentUser.uid,
+          adminId:   currentUser.uid,
           adminName: currentUser.displayName,
           memberIds: [currentUser.uid],
           members: [{
-            uid: currentUser.uid,
-            name: currentUser.displayName,
-            email: currentUser.email,
-            done: false,
+            uid:      currentUser.uid,
+            name:     currentUser.displayName,
+            email:    currentUser.email,
+            done:     false,
             joinedAt: new Date().toISOString()
           }],
-          status: 'active',
+          status:    'active',
           createdAt: serverTimestamp()
         });
         closeModals();
         window.location.href = `group.html?id=${docRef.id}`;
-      } catch(e) {
-        alert('Error creating group. Please try again.');
-        console.error(e);
-      }
+      } catch(e) { alert('Error creating group. Please try again.'); console.error(e); }
     };
 
-    // Join group
     window.joinGroup = async function() {
       const input = document.getElementById('join-link-input').value.trim();
       const match = input.match(/[?&]id=([a-zA-Z0-9]+)/);
@@ -479,29 +253,11 @@
       window.location.href = `group.html?id=${match[1]}&join=true`;
     };
 
-    // Open group
-    window.openGroup = function(id) {
-      window.location.href = `group.html?id=${id}`;
-    };
-
-    // Sign out
-    window.signOut = async function() {
+    window.signOutUser = async function() {
       sessionStorage.clear();
       await fbSignOut(auth);
       window.location.href = 'index.html';
     };
-
-    window.openCreateModal = function() {
-      document.getElementById('create-modal').classList.remove('hidden');
-    };
-    window.openJoinModal = function() {
-      document.getElementById('join-modal').classList.remove('hidden');
-    };
-    window.closeModals = function() {
-      document.getElementById('create-modal').classList.add('hidden');
-      document.getElementById('join-modal').classList.add('hidden');
-    };
   </script>
-
 </body>
 </html>
