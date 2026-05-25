@@ -1,0 +1,232 @@
+================================================================================
+  STORAGE PLATFORM — PROMPT LOG
+  For GitHub tracking & educational vibe coding purposes
+  Author: Mani
+================================================================================
+
+HOW TO USE THIS FILE
+--------------------
+Every time a new design decision or prompt is added in Claude, this file gets
+appended with the new entry. Commit this file to GitHub after each session to
+maintain a full history of how the product idea evolved from raw thought to
+built product.
+
+================================================================================
+SESSION 1 — 2026-05-25
+================================================================================
+
+--------------------------------------------------------------------------------
+PROMPT 1: Initial Concept Pitch
+--------------------------------------------------------------------------------
+I have a thought let me know if it is feasible. we can decide the name later on.
+the app is kind of platform where you can integrate any kind of digital storage
+and cloud storage even you can connect physical storage (showing online when
+plugged in and offline when plugged out or system turned off.) lets say a group
+trip. everyone want to share the photos in a single platform, the concept here
+is everybody share the same platform and provides their storage to support
+storing activity for all. for example, lets say if they join the group, they
+GoogleDrive storage should be integrated as common storage. 1 person 15 GB,
+10 person - 150 GB shared storage., in addition to that, they can integrate any
+type of storages available in the market, ex: Terabox, Mega, may be why not
+amazon cloud or some renowned storages. may be you can ask me some more
+questions if you want to get some clarity on this. or if i am missing something,
+enlighten me and clarify to me. dont jump into the conclusion ever like building
+something without asking me.
+
+--------------------------------------------------------------------------------
+PROMPT 2: Ownership Model Reference
+--------------------------------------------------------------------------------
+Q: Who owns and controls the files once they're uploaded to the shared pool?
+A: how splitfree app works, the one we created last week
+
+(Reference: SplitFree = each person owns their own entries, group sees shared
+ ledger. Applied here: each member owns their own files, but contributes storage
+ capacity to the shared pool.)
+
+--------------------------------------------------------------------------------
+PROMPT 3: Contribution Model & Use Case
+--------------------------------------------------------------------------------
+Q: How should storage contribution work — is it fair-share or flexible?
+A: Fair-share: equal contribution required
+
+Q: What's the primary use case you're designing for first?
+A: General-purpose (all of the above)
+
+--------------------------------------------------------------------------------
+PROMPT 4: Admin Dismantling
+--------------------------------------------------------------------------------
+may be one admin can decide when to dismantle the group
+
+--------------------------------------------------------------------------------
+PROMPT 5: Group Lifecycle Deep Decisions
+--------------------------------------------------------------------------------
+Q: When the admin dismantles the group, what happens to the files?
+A: Files get deleted permanently
+
+Q: If a member wants to leave before the admin dismantles — can they?
+A: Send Leaving Request thru button click, So that Admin will be notified in his
+   dashboard notification and he will have his personal conversation with that
+   member for the reason and causes. once settled, admin will either approve
+   or reject.
+
+Q: On the routing question — when someone uploads a file, where should it
+   physically land?
+A: its should be called as integrated storage, so common space for all.
+   like multiple droplets of water becomes ocean.
+
+--------------------------------------------------------------------------------
+PROMPT 6: Deep Design Decisions (A through E)
+--------------------------------------------------------------------------------
+A. Basically, this is for media sharing purpose with group. so everyone
+   downloaded the files they want, when can just flag I'm done with the download
+   button or check box or whichever is better. if done, means they gave consent,
+   whoever is not yet done, admin can send a notification to that person may be
+   thru dashboard notification or email notification, so that he may or may not
+   have discussion with the member and explain that only he or she is pending in
+   download and ask them to finish it. once all flags are green. The Group
+   officially dismantles by admin. I dont know if i answered your question A
+   correctly.
+
+B. May be physical storage we can discuss & upgrade later on.
+
+C. the scope should be within that group. so no security needed within the group,
+   may be the app can advise the people who signs in can have separate gmailID
+   or any storage for the trip & group sharing purposes.
+
+D. G drive is must have for launch. Though i am not sure of others technically.
+
+E. Web App, after successful build of logical web site we can work on mobile app
+   for both android and ios.
+
+   So the concept is kind of potluck, everyone brings food from home, everyone
+   consumes everything, after the consumption admin dismantles everything.
+
+--------------------------------------------------------------------------------
+PROMPT 7: Documentation Request
+--------------------------------------------------------------------------------
+I dont have a track of our threads, please create a word document of the prompts
+i gave and update it regularly in a txt file append it regularly, so that we can
+add that in the git hub for tracking and educational vibe coding purposes.
+
+================================================================================
+DECISIONS SNAPSHOT — After Session 1
+================================================================================
+
+| Dimension             | Decision                                              |
+|-----------------------|-------------------------------------------------------|
+| Storage model         | Unified ocean — federated pool, single view           |
+| Core analogy          | Potluck — bring, consume, host cleans up              |
+| Contribution rule     | Fair-share — equal quota per member                   |
+| Launch storage        | Google Drive (must-have)                              |
+| Physical storage      | Deferred to later version                             |
+| File ownership        | Original uploader retains ownership                   |
+| Scope & privacy       | Within-group only; advise dedicated account usage     |
+| Group lifecycle       | Admin-controlled                                      |
+| Member exit           | Request → Admin notified → Conversation → Approve/Reject |
+| Dismantling process   | All download → Flag Done → All green → Admin deletes  |
+| Platform              | Web app first, then Android + iOS                     |
+| Primary use case      | Media sharing — general purpose                       |
+
+================================================================================
+OPEN QUESTIONS — Pending Resolution
+================================================================================
+
+[ ] Group creation flow — invite link, code, or email invite?
+[ ] Fair-share enforcement — what if member storage is nearly full?
+[ ] Upload permissions — open to all or admin-moderated?
+[ ] Additional storage providers — MEGA, Terabox, Amazon S3?
+[ ] Platform name — TBD
+
+================================================================================
+END OF SESSION 1
+================================================================================
+
+
+================================================================================
+SESSION 2 — 2026-05-25 (continued)
+================================================================================
+
+--------------------------------------------------------------------------------
+PROMPT 8: Advisory Modal Refinement
+--------------------------------------------------------------------------------
+In advisory, second point should mention, even if connected with existing email
+id. it must be highlighted. also, not sign-in before ToS checklist.
+
+--------------------------------------------------------------------------------
+PROMPT 9: ToS File Scope Correction
+--------------------------------------------------------------------------------
+Not all the files, only the trip related files.
+(Only group-uploaded files deleted on dismantling — personal Drive untouched)
+
+--------------------------------------------------------------------------------
+PROMPT 10: Market Research Request
+--------------------------------------------------------------------------------
+i will share the color palette in next thread, meanwhile check if this app
+kind exists already in the market.
+
+--------------------------------------------------------------------------------
+PROMPT 11: Colour Palette
+--------------------------------------------------------------------------------
+[Image uploaded] #1F6F5F | #2FA084 | #6FCF97 | #EEEEEE
+
+--------------------------------------------------------------------------------
+PROMPT 12: Transparency Identity
+--------------------------------------------------------------------------------
+whatsapp is not transparent as ours.
+
+--------------------------------------------------------------------------------
+PROMPT 13: Naming Journey
+--------------------------------------------------------------------------------
+Potluck?     → Taken (potluck.us)
+MultiPot?    → Taken (Mealthy pressure cooker)
+SharePot?    → Taken (Indian file sharing app)
+Meltpot?     → Too close to MeltinPot
+Droppot?     → Clear
+Dropot?      → CLEAR ✅ APPROVED — final name
+
+--------------------------------------------------------------------------------
+PROMPT 14: Logo Concept
+--------------------------------------------------------------------------------
+logo should be img icons and video icons should be falling in a hot pot.
+
+--------------------------------------------------------------------------------
+PROMPT 15: Tech Stack + Hosting
+--------------------------------------------------------------------------------
+Stack: HTML/CSS/JS + Python Vercel serverless
+Hosting: code-manigopal.github.io/dropot + Vercel free
+Cost: Zero spend
+
+--------------------------------------------------------------------------------
+PROMPT 16: GitHub Setup
+--------------------------------------------------------------------------------
+yes please — generate folder structure + README + setup commands
+
+================================================================================
+DECISIONS SNAPSHOT — After Session 2
+================================================================================
+
+| Dimension             | Decision                                              |
+|-----------------------|-------------------------------------------------------|
+| Platform name         | Dropot                                                |
+| Logo                  | Photo + video icons falling into a glowing hot pot    |
+| Colour palette        | #1F6F5F | #2FA084 | #6FCF97 | #EEEEEE               |
+| Frontend              | HTML + CSS + JS → GitHub Pages                        |
+| Backend               | Python serverless → Vercel free tier                  |
+| Live URL              | code-manigopal.github.io/dropot                       |
+| Total cost            | $0                                                    |
+| Sign-in flow          | Advisory Modal → ToS Checklist → Google OAuth         |
+| File deletion scope   | Group-uploaded files only — never personal Drive      |
+| Core differentiator   | Full transparency vs WhatsApp black box               |
+
+================================================================================
+OPEN QUESTIONS
+================================================================================
+
+[ ] Group invite flow — code, link, or email?
+[ ] Additional storage providers beyond Google Drive
+[ ] Logo SVG design
+[ ] Firebase vs alternative for database
+
+================================================================================
+END OF SESSION 2
+================================================================================
