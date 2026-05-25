@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dropot — Group</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --pd:#1F6F5F;--pm:#2FA084;--ag:#6FCF97;--neu:#EEEEEE;
+      --white:#FFFFFF;--dark:#1A1A1A;--muted:#555555;
+      --warn-y:#FFF8E1;--warn-b:#F0A500;
+      --red:#FF4560;--green:#00C896;
+      --fd:'Nirmala UI','Segoe UI','Arial Unicode MS',sans-serif;
+      --fb:'Nirmala UI','Segoe UI',Arial,sans-serif;
+      --fm:'Nirmala UI','Consolas','Courier New',monospace;
+    }
+    body{font-family:var(--fb);background:var(--neu);min-height:100vh;}
+
+    /* ── Header ── */
+    .header{
+      background:var(--pd);
+      padding:0 32px;height:64px;
+      display:flex;align-items:center;justify-content:space-between;
+      box-shadow:0 2px 12px rgba(0,0,0,0.15);
+      position:sticky;top:0;z-index:50;
+    }
+    .header-left{display:flex;align-items:center;gap:16px;}
+    .back-btn{
+      color:rgba(255,255,255,0.7);
+      text-decoration:none;
+      font-size:22px;
+      transition:color 0.2s;
+    }
+    .back-btn:hover{color:white;}
+    .header-logo{
+      font-family:var(--fd);font-size:20px;font-weight:700;
+      color:var(--white);display:flex;align-items:center;gap:8px;
+    }
+    .group-title{
+      font-family:var(--fd);font-size:16px;font-weight:600;
+      color:rgba(255,255,255,0.75);
+    }
+    .header-right{display:flex;align-items:center;gap:10px;}
+    .invite-btn{
+      background:rgba(255,255,255,0.15);
+      border:1px solid rgba(255,255,255,0.3);
+      color:white;padding:8px 16px;
+      border-radius:8px;
+      font-family:var(--fd);font-size:13px;font-weight:600;
+      cursor:pointer;transition:all 0.2s;
+      display:flex;align-items:center;gap:6px;
+    }
+    .invite-btn:hover{background:rgba(255,255,255,0.25);}
+
+    /* ── Layout ── */
+    .layout{
+      display:grid;
+      grid-template-columns:1fr 300px;
+      gap:0;
+      min-height:calc(100vh - 64px);
+    }
+
+    /* ── Main Ocean ── */
+    .ocean{padding:28px 32px;}
+
+    /* ── Upload Zone ── */
+    .upload-zone{
+      background:var(--white);
+      border:2px dashed var(--pm);
+      border-radius:16px;
+      padding:32px;
+      text-align:center;
+      cursor:pointer;
+      transition:all 0.2s;
+      margin-bottom:24px;
+    }
+    .upload-zone:hover,.upload-zone.dragover{
+      background:#F0FBF8;
+      border-color:var(--pd);
+    }
+    .upload-zone .upload-icon{font-size:40px;margin-bottom:10px;display:block;}
+    .upload-zone h3{
+      font-family:var(--fd);font-size:16px;font-weight:700;
+      color:var(--pd);margin-bottom:6px;
+    }
+    .upload-zone p{
+      font-family:var(--fb);font-size:13px;color:var(--muted);
+      margin-bottom:16px;
+    }
+    .btn-upload{
+      background:var(--pm);color:white;
+      border:none;padding:10px 24px;
+      border-radius:8px;
+      font-family:var(--fd);font-size:13px;font-weight:700;
+      cursor:pointer;transition:all 0.2s;
+    }
+    .btn-upload:hover{background:var(--pd);}
+    #file-input{display:none;}
+
+    /* ── Filter Bar ── */
+    .filter-bar{
+      display:flex;align-items:center;
+      gap:10px;margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+    .filter-label{
+      font-family:var(--fd);font-size:13px;font-weight:600;
+      color:var(--muted);
+    }
+    .filter-btn{
+      padding:6px 14px;border-radius:20px;
+      border:1.5px solid var(--neu);
+      background:var(--white);
+      font-family:var(--fd);font-size:12px;font-weight:600;
+      cursor:pointer;transition:all 0.2s;color:var(--muted);
+    }
+    .filter-btn.active{
+      background:var(--pm);color:white;border-color:var(--pm);
+    }
+
+    /* ── Files Grid ── */
+    .files-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+      gap:16px;
+    }
+    .file-card{
+      background:var(--white);
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:0 2px 10px rgba(0,0,0,0.06);
+      border:1.5px solid #E8E8E8;
+      transition:all 0.2s;
+      cursor:pointer;
+    }
+    .file-card:hover{
+      border-color:var(--pm);
+      transform:translateY(-2px);
+      box-shadow:0 6px 20px rgba(47,160,132,0.12);
+    }
+    .file-thumb{
+      width:100%;height:130px;
+      background:linear-gradient(135deg,#E8F5F2,#D4EDE7);
+      display:flex;align-items:center;justify-content:center;
+      font-size:42px;position:relative;
+      overflow:hidden;
+    }
+    .file-thumb img{
+      width:100%;height:100%;
+      object-fit:cover;
+    }
+    .file-thumb .file-type-icon{
+      font-size:42px;
+    }
+    .file-info{padding:10px 12px;}
+    .file-name{
+      font-family:var(--fd);font-size:12px;font-weight:600;
+      color:var(--dark);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      margin-bottom:4px;
+    }
+    .file-meta{
+      font-family:var(--fm);font-size:11px;color:var(--muted);
+    }
+    .file-actions{
+      padding:8px 12px;
+      border-top:1px solid var(--neu);
+      display:flex;gap:6px;
+    }
+    .btn-dl{
+      flex:1;padding:6px;
+      background:var(--pm);color:white;
+      border:none;border-radius:6px;
+      font-family:var(--fd);font-size:11px;font-weight:700;
+      cursor:pointer;transition:all 0.2s;
+    }
+    .btn-dl:hover{background:var(--pd);}
+    .btn-del{
+      padding:6px 8px;
+      background:var(--neu);color:var(--red);
+      border:none;border-radius:6px;
+      font-family:var(--fd);font-size:11px;font-weight:700;
+      cursor:pointer;transition:all 0.2s;
+    }
+    .btn-del:hover{background:#FFE5E5;}
+
+    .files-empty{
+      grid-column:1/-1;
+      text-align:center;padding:48px;
+      color:var(--muted);font-family:var(--fb);font-size:15px;
+    }
+    .files-empty .empty-icon{font-size:48px;display:block;margin-bottom:12px;}
+
+    /* ── Sidebar ── */
+    .sidebar{
+      background:var(--white);
+      border-left:1px solid #E0E0E0;
+      padding:24px 20px;
+      display:flex;flex-direction:column;gap:24px;
+      overflow-y:auto;
+      height:calc(100vh - 64px);
+      position:sticky;top:64px;
+    }
+
+    .sidebar-section-title{
+      font-family:var(--fd);font-size:13px;font-weight:700;
+      color:var(--pd);text-transform:uppercase;
+      letter-spacing:0.8px;margin-bottom:12px;
+    }
+
+    /* Storage pool */
+    .pool-bar{
+      background:var(--neu);
+      border-radius:8px;height:10px;overflow:hidden;
+      margin-bottom:8px;
+    }
+    .pool-fill{
+      height:100%;
+      background:linear-gradient(90deg,var(--pm),var(--ag));
+      border-radius:8px;
+      transition:width 0.5s ease;
+    }
+    .pool-stats{
+      display:flex;justify-content:space-between;
+      font-family:var(--fm);font-size:11px;color:var(--muted);
+    }
+
+    /* Members */
+    .member-item{
+      display:flex;align-items:center;
+      gap:10px;padding:10px 0;
+      border-bottom:1px solid var(--neu);
+    }
+    .member-item:last-child{border-bottom:none;}
+    .member-avatar{
+      width:34px;height:34px;border-radius:50%;
+      background:var(--pm);
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--fd);font-weight:700;font-size:13px;
+      color:white;flex-shrink:0;
+    }
+    .member-info{flex:1;}
+    .member-name{
+      font-family:var(--fd);font-size:13px;font-weight:600;
+      color:var(--dark);
+    }
+    .member-role{
+      font-family:var(--fm);font-size:11px;color:var(--muted);
+    }
+    .done-flag{
+      width:28px;height:28px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:14px;flex-shrink:0;
+      border:2px solid var(--neu);
+      background:var(--neu);
+    }
+    .done-flag.green{
+      background:var(--ag);border-color:var(--ag);
+    }
+
+    /* Done button */
+    .done-section{
+      background:linear-gradient(135deg,#F0FBF8,#E8F5F2);
+      border:2px solid var(--ag);
+      border-radius:14px;
+      padding:18px;
+      text-align:center;
+    }
+    .done-section h4{
+      font-family:var(--fd);font-size:14px;font-weight:700;
+      color:var(--pd);margin-bottom:6px;
+    }
+    .done-section p{
+      font-family:var(--fb);font-size:12px;color:var(--muted);
+      margin-bottom:14px;line-height:1.5;
+    }
+    .btn-done{
+      width:100%;padding:12px;
+      background:var(--ag);color:var(--pd);
+      border:none;border-radius:10px;
+      font-family:var(--fd);font-size:14px;font-weight:700;
+      cursor:pointer;transition:all 0.2s;
+    }
+    .btn-done:hover{background:#5BC280;color:white;}
+    .btn-done.flagged{
+      background:#E8F5E9;color:#2E7D32;
+      cursor:default;
+    }
+
+    /* Admin dismantle */
+    .admin-section{
+      background:#FFF5F5;
+      border:2px solid #FFCCCC;
+      border-radius:14px;
+      padding:18px;
+      text-align:center;
+    }
+    .admin-section h4{
+      font-family:var(--fd);font-size:14px;font-weight:700;
+      color:var(--red);margin-bottom:6px;
+    }
+    .admin-section p{
+      font-family:var(--fb);font-size:12px;color:var(--muted);
+      margin-bottom:14px;line-height:1.5;
+    }
+    .btn-dismantle{
+      width:100%;padding:12px;
+      background:var(--red);color:white;
+      border:none;border-radius:10px;
+      font-family:var(--fd);font-size:14px;font-weight:700;
+      cursor:pointer;transition:all 0.2s;
+    }
+    .btn-dismantle:hover{background:#D32F2F;}
+    .btn-dismantle:disabled{
+      background:#FFCCCC;color:#FF9999;
+      cursor:not-allowed;
+    }
+    .dismantle-hint{
+      font-family:var(--fm);font-size:11px;
+      color:var(--red);margin-top:8px;
+    }
+
+    /* ── Toast ── */
+    .toast{
+      position:fixed;bottom:24px;left:50%;
+      transform:translateX(-50%);
+      background:var(--dark);color:white;
+      padding:12px 24px;border-radius:10px;
+      font-family:var(--fd);font-size:14px;font-weight:600;
+      box-shadow:0 8px 24px rgba(0,0,0,0.2);
+      z-index:999;
+      animation:fadeInUp 0.3s ease;
+      white-space:nowrap;
+    }
+    .toast.hidden{display:none;}
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateX(-50%) translateY(10px);}
+      to{opacity:1;transform:translateX(-50%) translateY(0);}
+    }
+
+    /* ── Overlay Modal ── */
+    .overlay{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,0.5);
+      display:flex;align-items:center;justify-content:center;
+      z-index:200;padding:20px;
+    }
+    .overlay.hidden{display:none;}
+    .modal{
+      background:var(--white);border-radius:20px;
+      padding:36px 40px;max-width:440px;width:100%;
+      box-shadow:0 24px 64px rgba(0,0,0,0.25);
+      animation:slideUp 0.25s ease;
+      text-align:center;
+    }
+    @keyframes slideUp{
+      from{transform:translateY(20px);opacity:0;}
+      to{transform:translateY(0);opacity:1;}
+    }
+    .modal .modal-icon{font-size:48px;display:block;margin-bottom:16px;}
+    .modal h3{
+      font-family:var(--fd);font-size:20px;font-weight:700;
+      color:var(--dark);margin-bottom:10px;
+    }
+    .modal p{
+      font-family:var(--fb);font-size:14px;color:var(--muted);
+      line-height:1.65;margin-bottom:24px;
+    }
+    .invite-link-box{
+      background:var(--neu);border-radius:10px;
+      padding:12px 16px;
+      font-family:var(--fm);font-size:12px;
+      color:var(--dark);word-break:break-all;
+      margin-bottom:16px;text-align:left;
+      border:1.5px solid #D0D0D0;
+    }
+    .modal-btns{display:flex;gap:12px;}
+    .btn-modal-cancel{
+      flex:1;padding:13px;
+      border:2px solid var(--neu);background:var(--white);
+      border-radius:10px;font-family:var(--fd);font-size:14px;
+      font-weight:600;cursor:pointer;color:var(--muted);
+    }
+    .btn-modal-copy{
+      flex:2;padding:13px;border:none;
+      background:var(--pm);color:white;
+      border-radius:10px;font-family:var(--fd);font-size:14px;
+      font-weight:700;cursor:pointer;transition:all 0.2s;
+    }
+    .btn-modal-copy:hover{background:var(--pd);}
+    .btn-modal-danger{
+      flex:2;padding:13px;border:none;
+      background:var(--red);color:white;
+      border-radius:10px;font-family:var(--fd);font-size:14px;
+      font-weight:700;cursor:pointer;transition:all 0.2s;
+    }
+    .btn-modal-danger:hover{background:#D32F2F;}
+
+    @media(max-width:768px){
+      .layout{grid-template-columns:1fr;}
+      .sidebar{position:relative;top:0;height:auto;border-left:none;border-top:1px solid #E0E0E0;}
+      .header{padding:0 16px;}
+      .ocean{padding:20px 16px;}
+    }
+    .hidden{display:none!important;}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <a class="back-btn" href="dashboard.html" title="Back to dashboard">‹</a>
+      <div class="header-logo">🫕 Dropot</div>
+      <span class="group-title" id="header-group-name">Loading...</span>
+    </div>
+    <div class="header-right">
+      <button class="invite-btn" onclick="showInviteModal()">🔗 Invite Link</button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+
+    <!-- Ocean (main) -->
+    <div class="ocean">
+
+      <!-- Upload Zone -->
+      <div class="upload-zone" id="upload-zone"
+           ondragover="event.preventDefault();this.classList.add('dragover')"
+           ondragleave="this.classList.remove('dragover')"
+           ondrop="handleDrop(event)">
+        <span class="upload-icon">📸</span>
+        <h3>Drop photos & videos into the ocean</h3>
+        <p>Drag & drop files here, or click to browse. Images and videos only.</p>
+        <button class="btn-upload" onclick="document.getElementById('file-input').click()">
+          Choose Files
+        </button>
+        <input type="file" id="file-input" multiple accept="image/*,video/*" onchange="handleFiles(this.files)"/>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <span class="filter-label">Show:</span>
+        <button class="filter-btn active" onclick="filterFiles('all',this)">All</button>
+        <button class="filter-btn" onclick="filterFiles('image',this)">📸 Photos</button>
+        <button class="filter-btn" onclick="filterFiles('video',this)">🎥 Videos</button>
+        <button class="filter-btn" onclick="filterFiles('mine',this)">👤 Mine</button>
+      </div>
+
+      <!-- Files Grid -->
+      <div class="files-grid" id="files-grid">
+        <div class="files-empty">
+          <span class="empty-icon">🌊</span>
+          The ocean is empty — be the first to drop something in!
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <!-- Storage Pool -->
+      <div>
+        <div class="sidebar-section-title">🌊 Ocean Pool</div>
+        <div class="pool-bar">
+          <div class="pool-fill" id="pool-fill" style="width:0%"></div>
+        </div>
+        <div class="pool-stats">
+          <span id="pool-used">0 MB used</span>
+          <span id="pool-total">0 MB total</span>
+        </div>
+      </div>
+
+      <!-- Members -->
+      <div>
+        <div class="sidebar-section-title">👥 Members</div>
+        <div id="members-list">
+          <div style="font-family:var(--fb);font-size:13px;color:var(--muted);">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Done Flag -->
+      <div class="done-section" id="done-section">
+        <h4>✅ Flag as Done</h4>
+        <p>Downloaded everything you need? Flag Done to let the admin know you're ready.</p>
+        <button class="btn-done" id="done-btn" onclick="flagDone()">
+          I'm Done Downloading ✓
+        </button>
+      </div>
+
+      <!-- Admin Controls (hidden for non-admin) -->
+      <div class="admin-section hidden" id="admin-section">
+        <h4>⚠️ Dismantle Group</h4>
+        <p>Permanently delete all files and close this group. This cannot be undone.</p>
+        <button class="btn-dismantle" id="dismantle-btn" disabled onclick="confirmDismantle()">
+          Dismantle Group
+        </button>
+        <div class="dismantle-hint" id="dismantle-hint">Waiting for all members to flag Done...</div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast hidden" id="toast"></div>
+
+  <!-- Invite Modal -->
+  <div class="overlay hidden" id="invite-modal">
+    <div class="modal">
+      <span class="modal-icon">🔗</span>
+      <h3>Invite to Group</h3>
+      <p>Share this link with anyone you want to add to the group.</p>
+      <div class="invite-link-box" id="invite-link-box">Loading...</div>
+      <div class="modal-btns">
+        <button class="btn-modal-cancel" onclick="closeModals()">Close</button>
+        <button class="btn-modal-copy" onclick="copyInviteLink()">Copy Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dismantle Confirm Modal -->
+  <div class="overlay hidden" id="dismantle-modal">
+    <div class="modal">
+      <span class="modal-icon">⚠️</span>
+      <h3>Dismantle Group?</h3>
+      <p>This will permanently delete all files in the ocean and close the group for everyone. This cannot be undone.</p>
+      <div class="modal-btns">
+        <button class="btn-modal-cancel" onclick="closeModals()">Cancel</button>
+        <button class="btn-modal-danger" onclick="dismantleGroup()">Yes, Dismantle Everything</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, deleteDoc,
+             collection, addDoc, getDocs, query, where,
+             onSnapshot, serverTimestamp, arrayUnion }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytesResumable,
+             getDownloadURL, deleteObject }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+    // 🔧 REPLACE with your Firebase config
+    const firebaseConfig = {
+      apiKey: "REPLACE_WITH_YOUR_API_KEY",
+      authDomain: "REPLACE_WITH_YOUR_AUTH_DOMAIN",
+      projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+      storageBucket: "REPLACE_WITH_YOUR_STORAGE_BUCKET",
+      messagingSenderId: "REPLACE_WITH_YOUR_MESSAGING_SENDER_ID",
+      appId: "REPLACE_WITH_YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    let currentUser = null;
+    let groupId = null;
+    let groupData = null;
+    let allFiles = [];
+    let activeFilter = 'all';
+
+    // Get group ID from URL
+    const params = new URLSearchParams(window.location.search);
+    groupId = params.get('id');
+    const isJoining = params.get('join') === 'true';
+
+    if (!groupId) {
+      window.location.href = 'dashboard.html';
+    }
+
+    // Auth
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = 'index.html'; return; }
+      currentUser = user;
+      await loadGroup();
+      if (isJoining) await joinGroup();
+      listenToFiles();
+    });
+
+    // Load group data
+    async function loadGroup() {
+      const docSnap = await getDoc(doc(db, 'groups', groupId));
+      if (!docSnap.exists()) {
+        alert('Group not found.'); window.location.href = 'dashboard.html'; return;
+      }
+      groupData = docSnap.data();
+      document.getElementById('header-group-name').textContent = groupData.name;
+      document.title = `Dropot — ${groupData.name}`;
+
+      // Show admin section
+      if (groupData.adminId === currentUser.uid) {
+        document.getElementById('admin-section').classList.remove('hidden');
+      }
+
+      renderMembers();
+      updateInviteLink();
+      updateDismantleBtn();
+    }
+
+    // Join group
+    async function joinGroup() {
+      if (groupData.memberIds.includes(currentUser.uid)) return;
+      const newMember = {
+        uid: currentUser.uid,
+        name: currentUser.displayName || currentUser.email,
+        email: currentUser.email,
+        done: false,
+        joinedAt: new Date().toISOString()
+      };
+      await updateDoc(doc(db, 'groups', groupId), {
+        memberIds: arrayUnion(currentUser.uid),
+        members: arrayUnion(newMember)
+      });
+      groupData.members.push(newMember);
+      groupData.memberIds.push(currentUser.uid);
+      renderMembers();
+      showToast('✅ Joined group successfully!');
+      window.history.replaceState({}, '', `group.html?id=${groupId}`);
+    }
+
+    // Render members
+    function renderMembers() {
+      const list = document.getElementById('members-list');
+      list.innerHTML = '';
+      let allDone = true;
+      groupData.members.forEach(m => {
+        if (!m.done) allDone = false;
+        const isMe = m.uid === currentUser.uid;
+        const isAdmin = m.uid === groupData.adminId;
+        list.innerHTML += `
+          <div class="member-item">
+            <div class="member-avatar" style="background:${stringToColor(m.name)}">${m.name.charAt(0).toUpperCase()}</div>
+            <div class="member-info">
+              <div class="member-name">${m.name}${isMe ? ' (you)' : ''}</div>
+              <div class="member-role">${isAdmin ? '👑 Admin' : 'Member'}</div>
+            </div>
+            <div class="done-flag ${m.done ? 'green' : ''}" title="${m.done ? 'Done' : 'Not done yet'}">
+              ${m.done ? '✅' : '⏳'}
+            </div>
+          </div>`;
+      });
+
+      // Check if current user already flagged done
+      const me = groupData.members.find(m => m.uid === currentUser.uid);
+      if (me?.done) {
+        const btn = document.getElementById('done-btn');
+        btn.textContent = '✅ You\'ve flagged Done';
+        btn.classList.add('flagged');
+        btn.disabled = true;
+      }
+
+      updateDismantleBtn(allDone);
+    }
+
+    // Update dismantle button
+    function updateDismantleBtn(allDone) {
+      if (groupData.adminId !== currentUser.uid) return;
+      const btn = document.getElementById('dismantle-btn');
+      const hint = document.getElementById('dismantle-hint');
+      if (allDone) {
+        btn.disabled = false;
+        hint.textContent = '🟢 All members are done — you can dismantle!';
+        hint.style.color = '#2E7D32';
+      } else {
+        btn.disabled = true;
+        const pending = groupData.members.filter(m => !m.done).length;
+        hint.textContent = `⏳ ${pending} member${pending > 1 ? 's' : ''} still pending...`;
+      }
+    }
+
+    // Listen to files (real-time)
+    function listenToFiles() {
+      const q = query(collection(db, 'groups', groupId, 'files'));
+      onSnapshot(q, (snap) => {
+        allFiles = [];
+        snap.forEach(d => allFiles.push({ id: d.id, ...d.data() }));
+        allFiles.sort((a, b) => (b.uploadedAt?.seconds || 0) - (a.uploadedAt?.seconds || 0));
+        renderFiles();
+        updatePoolStats();
+      });
+    }
+
+    // Render files
+    function renderFiles() {
+      const grid = document.getElementById('files-grid');
+      let filtered = allFiles;
+      if (activeFilter === 'image') filtered = allFiles.filter(f => f.type?.startsWith('image'));
+      if (activeFilter === 'video') filtered = allFiles.filter(f => f.type?.startsWith('video'));
+      if (activeFilter === 'mine')  filtered = allFiles.filter(f => f.uploadedBy === currentUser.uid);
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="files-empty"><span class="empty-icon">🌊</span>
+          ${activeFilter === 'all' ? 'The ocean is empty — be the first to drop something in!' : 'No files match this filter.'}</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(f => {
+        const isOwner = f.uploadedBy === currentUser.uid;
+        const thumb = f.type?.startsWith('image')
+          ? `<img src="${f.url}" alt="${f.name}" loading="lazy"/>`
+          : `<span class="file-type-icon">🎥</span>`;
+        return `
+          <div class="file-card">
+            <div class="file-thumb">${thumb}</div>
+            <div class="file-info">
+              <div class="file-name" title="${f.name}">${f.name}</div>
+              <div class="file-meta">${formatSize(f.size)} · ${f.uploaderName || 'Unknown'}</div>
+            </div>
+            <div class="file-actions">
+              <button class="btn-dl" onclick="downloadFile('${f.url}','${f.name}')">⬇ Download</button>
+              ${isOwner ? `<button class="btn-del" onclick="deleteFile('${f.id}','${f.storagePath}')">✕</button>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    // Handle file upload
+    window.handleFiles = function(files) { uploadFiles(Array.from(files)); };
+    window.handleDrop = function(e) {
+      e.preventDefault();
+      document.getElementById('upload-zone').classList.remove('dragover');
+      uploadFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image') || f.type.startsWith('video')));
+    };
+
+    async function uploadFiles(files) {
+      if (!files.length) return;
+      for (const file of files) {
+        showToast(`⬆ Uploading ${file.name}...`);
+        const path = `groups/${groupId}/${Date.now()}_${file.name}`;
+        const storageRef = ref(storage, path);
+        const task = uploadBytesResumable(storageRef, file);
+        await new Promise((resolve, reject) => {
+          task.on('state_changed', null, reject, async () => {
+            const url = await getDownloadURL(task.snapshot.ref);
+            await addDoc(collection(db, 'groups', groupId, 'files'), {
+              name: file.name,
+              url,
+              storagePath: path,
+              type: file.type,
+              size: file.size,
+              uploadedBy: currentUser.uid,
+              uploaderName: currentUser.displayName || currentUser.email,
+              uploadedAt: serverTimestamp()
+            });
+            resolve();
+          });
+        });
+        showToast(`✅ ${file.name} uploaded!`);
+      }
+    }
+
+    // Download file
+    window.downloadFile = function(url, name) {
+      const a = document.createElement('a');
+      a.href = url; a.download = name; a.target = '_blank';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      showToast(`⬇ Downloading ${name}`);
+    };
+
+    // Delete file
+    window.deleteFile = async function(fileId, storagePath) {
+      if (!confirm('Delete this file?')) return;
+      try {
+        await deleteDoc(doc(db, 'groups', groupId, 'files', fileId));
+        await deleteObject(ref(storage, storagePath));
+        showToast('🗑 File deleted');
+      } catch(e) { console.error(e); showToast('Error deleting file'); }
+    };
+
+    // Flag Done
+    window.flagDone = async function() {
+      const members = groupData.members.map(m =>
+        m.uid === currentUser.uid ? { ...m, done: true } : m
+      );
+      await updateDoc(doc(db, 'groups', groupId), { members });
+      groupData.members = members;
+      const btn = document.getElementById('done-btn');
+      btn.textContent = '✅ You\'ve flagged Done';
+      btn.classList.add('flagged');
+      btn.disabled = true;
+      renderMembers();
+      showToast('✅ You\'ve flagged Done!');
+    };
+
+    // Dismantle
+    window.confirmDismantle = function() {
+      document.getElementById('dismantle-modal').classList.remove('hidden');
+    };
+
+    window.dismantleGroup = async function() {
+      closeModals();
+      showToast('🔥 Dismantling group...');
+      try {
+        // Delete all files from storage
+        const filesSnap = await getDocs(collection(db, 'groups', groupId, 'files'));
+        for (const f of filesSnap.docs) {
+          try { await deleteObject(ref(storage, f.data().storagePath)); } catch(e) {}
+          await deleteDoc(f.ref);
+        }
+        // Delete group document
+        await deleteDoc(doc(db, 'groups', groupId));
+        showToast('✅ Group dismantled. All files deleted.');
+        setTimeout(() => window.location.href = 'dashboard.html', 2000);
+      } catch(e) {
+        console.error(e);
+        showToast('Error dismantling. Try again.');
+      }
+    };
+
+    // Invite link
+    function updateInviteLink() {
+      const link = `${window.location.origin}${window.location.pathname.replace('group.html','group.html')}?id=${groupId}&join=true`;
+      document.getElementById('invite-link-box').textContent = link;
+    }
+
+    window.copyInviteLink = function() {
+      const link = document.getElementById('invite-link-box').textContent;
+      navigator.clipboard.writeText(link);
+      showToast('🔗 Invite link copied!');
+      closeModals();
+    };
+
+    // Pool stats
+    function updatePoolStats() {
+      const total = groupData.members.length * 15 * 1024 * 1024 * 1024;
+      const used = allFiles.reduce((s, f) => s + (f.size || 0), 0);
+      const pct = Math.min((used / total) * 100, 100);
+      document.getElementById('pool-fill').style.width = pct + '%';
+      document.getElementById('pool-used').textContent = formatSize(used) + ' used';
+      document.getElementById('pool-total').textContent = formatSize(total) + ' total';
+    }
+
+    // Filter
+    window.filterFiles = function(type, btn) {
+      activeFilter = type;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderFiles();
+    };
+
+    // Modals
+    window.showInviteModal = function() {
+      document.getElementById('invite-modal').classList.remove('hidden');
+    };
+    window.closeModals = function() {
+      document.querySelectorAll('.overlay').forEach(o => o.classList.add('hidden'));
+    };
+
+    // Toast
+    function showToast(msg, duration = 3000) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.remove('hidden');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.classList.add('hidden'), duration);
+    }
+    window.showToast = showToast;
+
+    // Helpers
+    function formatSize(bytes) {
+      if (!bytes) return '0 B';
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+      if (bytes < 1024*1024*1024) return (bytes/1024/1024).toFixed(1) + ' MB';
+      return (bytes/1024/1024/1024).toFixed(2) + ' GB';
+    }
+
+    function stringToColor(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      const colors = ['#2FA084','#1F6F5F','#6FCF97','#0099FF','#9B59B6','#E67E22','#E74C3C'];
+      return colors[Math.abs(hash) % colors.length];
+    }
+
+  </script>
+
+</body>
+</html>
