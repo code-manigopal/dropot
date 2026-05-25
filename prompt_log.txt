@@ -298,3 +298,205 @@ OPEN QUESTIONS
 ================================================================================
 END OF SESSION 3
 ================================================================================
+
+================================================================================
+SESSION 4 — 2026-05-25 (continued)
+================================================================================
+
+--------------------------------------------------------------------------------
+PROMPT 22: Full App Build Request
+--------------------------------------------------------------------------------
+lets wrap with the app bro..... build it.
+
+DECISIONS:
+- Join method: Invite link (click to join)
+- Database: Firebase Firestore
+- Core flow: Admin creates → members join → upload/download → Done flags → dismantle
+
+--------------------------------------------------------------------------------
+PROMPT 23: Tech Stack Clarification
+--------------------------------------------------------------------------------
+would it be as functional as Splitfree, because splitfree i deployed thru github.
+and it works as gem. I am layman in JS.
+
+DECISION: HTML/CSS/JS + Python Flask (Vercel) + Firebase Firestore
+Same deployment as SplitFree — GitHub Pages for frontend
+
+--------------------------------------------------------------------------------
+PROMPT 24: Vercel Question
+--------------------------------------------------------------------------------
+if i am running it on vercel, whats vercel?
+
+DECISION: GitHub Pages for frontend, Vercel for backend API only.
+Firebase handles Auth + Firestore. Vercel handles Google Drive API calls only.
+
+--------------------------------------------------------------------------------
+PROMPT 25: Storage Clarification
+--------------------------------------------------------------------------------
+are you sure. because we dont store videos and photos
+
+KEY INSIGHT: Files must go to user's own Google Drive — not Firebase Storage.
+Requires Vercel backend for Drive API calls.
+Architecture: GitHub Pages (UI) + Firebase (Auth/DB) + Vercel (Drive API)
+
+--------------------------------------------------------------------------------
+PROMPT 26: Domain Question
+--------------------------------------------------------------------------------
+for now, domain can be from code-manigopal.github.io?
+
+DECISION: Yes — code-manigopal.github.io/dropot for frontend.
+Vercel handles backend API invisibly.
+
+--------------------------------------------------------------------------------
+PROMPT 27: Build Backend
+--------------------------------------------------------------------------------
+yes please [build the backend]
+
+FILES BUILT:
+- backend/api/auth.py — Google OAuth handler
+- backend/api/drive.py — Google Drive upload/delete bridge
+- backend/api/groups.py — Group CRUD via Firebase
+- backend/api/notify.py — Email notifications
+
+--------------------------------------------------------------------------------
+PROMPT 28: Flask Rewrite
+--------------------------------------------------------------------------------
+okay build now [Flask rewrite]
+
+REASON: Vercel Python serverless had routing issues with BaseHTTPRequestHandler.
+SOLUTION: Rewrote entire backend as single Flask app (backend/index.py)
+All routes consolidated: /api/auth/*, /api/drive/*, /api/groups/*, /api/notify/*
+
+--------------------------------------------------------------------------------
+PROMPT 29: Vercel Deployment Issues
+--------------------------------------------------------------------------------
+[Multiple vercel.json fixes]
+
+FIXES APPLIED:
+1. Invalid runtime format → removed functions block
+2. File downloading instead of executing → added @vercel/python builder
+3. 404 errors → fixed path from api/index.py to index.py (file in backend/ root)
+FINAL WORKING vercel.json: builds with @vercel/python, rewrites all to index.py
+
+--------------------------------------------------------------------------------
+PROMPT 30: Backend Live Confirmation
+--------------------------------------------------------------------------------
+[Screenshot: {"status":"Dropot API is live 🫕"}]
+
+BACKEND LIVE at: https://dropot.vercel.app ✅
+
+--------------------------------------------------------------------------------
+PROMPT 31: Auth Flow Issues
+--------------------------------------------------------------------------------
+[Various Google OAuth errors]
+
+ISSUES:
+- redirect_uri_mismatch → hardcoded REDIRECT_URI in Flask
+- access_denied (test mode) → added manikandangopal97@gmail.com as test user
+- Popup closes immediately → Google Sign-in not enabled in Firebase Auth
+
+SOLUTION (Option C):
+- Firebase Auth handles identity (no verification restrictions)
+- Drive scope requested in same Firebase popup
+- Drive access token extracted from Firebase credential
+- Stored in sessionStorage for API calls
+
+--------------------------------------------------------------------------------
+PROMPT 32: Firebase Setup Issues
+--------------------------------------------------------------------------------
+[Firestore not enabled, wrong database name, missing permissions]
+
+FIXES:
+1. Enabled Firestore API in Google Cloud Console
+2. Created (default) Firestore database in Firebase Console
+3. Set Firestore rules to allow authenticated reads/writes
+
+Firestore Rules Applied:
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+
+--------------------------------------------------------------------------------
+PROMPT 33: Dashboard Working
+--------------------------------------------------------------------------------
+[Screenshot: Welcome back, Manikandan — dashboard live]
+
+MILESTONE: Full sign-in flow working ✅
+- Advisory modal ✅
+- ToS checklist ✅
+- Google OAuth via Firebase ✅
+- Dashboard loading ✅
+- Groups listing ✅
+
+--------------------------------------------------------------------------------
+PROMPT 34: Group Navigation & Module Scope Issues
+--------------------------------------------------------------------------------
+[Various JS errors: getStorage not defined, handleFiles not defined,
+ openGroup not defined]
+
+ROOT CAUSE: Functions defined inside type="module" scripts are not accessible
+from inline HTML onclick attributes.
+
+SOLUTION: Expose all HTML-callable functions in a regular <script> block
+outside the module. Move event listeners inside module.
+
+ALL THREE FILES REBUILT from scratch with fixes:
+- index.html: Firebase Auth + Drive scope
+- dashboard.html: All navigation functions exposed globally
+- group.html: Event listeners inside module, delete via data attributes
+
+--------------------------------------------------------------------------------
+PROMPT 35: CORS Error on Upload
+--------------------------------------------------------------------------------
+Access to fetch blocked by CORS policy from code-manigopal.github.io
+
+FIX: Changed CORS origin from:
+  "https://code-manigopal.github.io/dropot"  ← wrong (path included)
+to:
+  "https://code-manigopal.github.io"          ← correct (origin only)
+
+FILE: backend/index.py → CORS(app, origins=["https://code-manigopal.github.io"])
+
+================================================================================
+DECISIONS SNAPSHOT — After Session 4
+================================================================================
+
+| Dimension              | Decision                                              |
+|------------------------|-------------------------------------------------------|
+| Frontend               | HTML/CSS/JS → GitHub Pages                           |
+| Backend                | Python Flask → Vercel (dropot.vercel.app)            |
+| Auth                   | Firebase Auth (Google) → Drive token extracted       |
+| Database               | Firebase Firestore (default database)                |
+| File storage           | User's own Google Drive via Drive API                |
+| Token storage          | sessionStorage (session only, never persisted)       |
+| CORS origin            | https://code-manigopal.github.io                     |
+| Firestore rules        | Authenticated users only                             |
+
+================================================================================
+LIVE URLS
+================================================================================
+
+Frontend:  https://code-manigopal.github.io/dropot
+Backend:   https://dropot.vercel.app
+Firebase:  dropot-ac097 project
+
+================================================================================
+OPEN ITEMS
+================================================================================
+
+[ ] Upload CORS fix — verify after deploy
+[ ] Test full upload → download → Done flag → dismantle flow
+[ ] Clean up duplicate test groups in Firestore
+[ ] Add test users for group members (Google OAuth consent screen)
+[ ] Logo design — SVG (photo + video icons falling into pot)
+[ ] Security rules tightening (post-MVP)
+[ ] Mobile app (Android + iOS) — future
+
+================================================================================
+END OF SESSION 4
+================================================================================

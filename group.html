@@ -391,7 +391,7 @@
       grid.innerHTML = filtered.map(f => {
         const isOwner = f.uploadedBy === currentUser.uid;
         const thumb   = f.type?.startsWith('image')
-          ? `<img src="${f.url}" alt="${f.name}" loading="lazy"/>`
+          ? `<img src="${f.thumbUrl || f.url}" alt="${f.name}" loading="lazy"/>`
           : `<span style="font-size:42px">🎥</span>`;
         return `
           <div class="file-card">
@@ -413,30 +413,52 @@
       });
     }
 
-    // ── Upload ───────────────────────────────────────
+    // ── Upload directly to Google Drive from browser ─────
     async function uploadFiles(files) {
       if (!files.length) return;
       for (const file of files) {
         showToastGlobal(`⬆ Uploading ${file.name}...`);
         try {
-          const base64 = await new Promise((res, rej) => {
-            const r = new FileReader();
-            r.onload  = () => res(r.result.split(',')[1]);
-            r.onerror = rej;
-            r.readAsDataURL(file);
+          // Step 1 — Get or create group folder in Drive
+          const folderId = await getOrCreateFolder();
+          if (!folderId) { showToastGlobal('❌ Could not access Drive folder'); continue; }
+
+          // Step 2 — Upload file directly to Drive (multipart)
+          const metadata = JSON.stringify({
+            name:          file.name,
+            parents:       [folderId],
+            description:   `dropot-group:${groupId}`,
+            appProperties: { dropotGroupId: groupId }
           });
-          const response = await fetch(`${BACKEND}/api/drive/upload`, {
+          const form = new FormData();
+          form.append('metadata', new Blob([metadata], { type: 'application/json' }));
+          form.append('file', file);
+
+          const res = await fetch(
+            'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name',
+            {
+              method:  'POST',
+              headers: { 'Authorization': `Bearer ${driveToken}` },
+              body:    form
+            }
+          );
+          const data = await res.json();
+          if (data.error) { showToastGlobal(`❌ Upload failed: ${data.error.message}`); continue; }
+
+          // Step 3 — Make file readable by anyone with link
+          await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
             method:  'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${driveToken}` },
-            body: JSON.stringify({ name: file.name, content: base64, type: file.type, groupId })
+            headers: { 'Authorization': `Bearer ${driveToken}`, 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ role: 'reader', type: 'anyone' })
           });
-          const data = await response.json();
-          if (data.error) { showToastGlobal(`❌ Upload failed: ${data.error}`); continue; }
+
+          // Step 4 — Save metadata to Firestore
           await addDoc(collection(db, 'groups', groupId, 'files'), {
             name:         file.name,
-            url:          data.url,
-            viewUrl:      data.viewUrl,
-            driveFileId:  data.fileId,
+            url:          `https://drive.google.com/uc?id=${data.id}&export=download`,
+            viewUrl:      `https://drive.google.com/file/d/${data.id}/view`,
+            thumbUrl:     `https://drive.google.com/thumbnail?id=${data.id}&sz=w400`,
+            driveFileId:  data.id,
             type:         file.type,
             size:         file.size,
             uploadedBy:   currentUser.uid,
@@ -446,6 +468,27 @@
           showToastGlobal(`✅ ${file.name} uploaded!`);
         } catch(e) { console.error(e); showToastGlobal(`❌ Failed: ${file.name}`); }
       }
+    }
+
+    // Get or create Dropot-{groupId} folder in Drive
+    async function getOrCreateFolder() {
+      const folderName = `Dropot-${groupId}`;
+      const headers    = { 'Authorization': `Bearer ${driveToken}` };
+
+      // Search for existing
+      const q   = encodeURIComponent(`name='${folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);
+      const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`, { headers });
+      const data = await res.json();
+      if (data.files?.length) return data.files[0].id;
+
+      // Create new folder
+      const create = await fetch('https://www.googleapis.com/drive/v3/files', {
+        method:  'POST',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ name: folderName, mimeType: 'application/vnd.google-apps.folder' })
+      });
+      const folder = await create.json();
+      return folder.id;
     }
 
     // ── Delete ───────────────────────────────────────
