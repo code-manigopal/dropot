@@ -39,7 +39,7 @@ GOOGLE_CLIENT_ID     = os.environ.get("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
 REDIRECT_URI         = os.environ.get("REDIRECT_URI", "https://dropot.vercel.app/api/auth/callback")
 
-CORS(app, origins=[FRONTEND_URL], supports_credentials=True)
+CORS(app, origins=["https://code-manigopal.github.io"], supports_credentials=True)
 
 SCOPES = [
     "openid", "email", "profile",
