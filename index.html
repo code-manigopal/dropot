@@ -4,56 +4,411 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dropot — Shared Media Pool</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary-dark:  #1F6F5F;
+      --primary-mid:   #2FA084;
+      --accent-green:  #6FCF97;
+      --neutral:       #EEEEEE;
+      --white:         #FFFFFF;
+      --text-dark:     #1A1A1A;
+      --text-muted:    #555555;
+      --warn-yellow:   #FFF8E1;
+      --warn-border:   #F0A500;
+
+      --font-display:  'Nirmala UI', 'Segoe UI', 'Arial Unicode MS', sans-serif;
+      --font-body:     'Nirmala UI', 'Segoe UI', Arial, sans-serif;
+      --font-mono:     'Nirmala UI', 'Consolas', 'Courier New', monospace;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, #1F6F5F 0%, #2FA084 55%, #6FCF97 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Landing Background ── */
+    .landing {
+      text-align: center;
+      color: white;
+      padding: 40px;
+      user-select: none;
+    }
+
+    .landing .logo-icon {
+      font-size: 72px;
+      margin-bottom: 16px;
+      display: block;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.2));
+    }
+
+    .landing h1 {
+      font-family: var(--font-display);
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    .landing p {
+      font-family: var(--font-body);
+      font-size: 17px;
+      opacity: 0.80;
+      font-style: italic;
+      letter-spacing: 0.2px;
+    }
+
+    /* ── Overlay ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .overlay.hidden { display: none; }
+
+    /* ── Modal Box ── */
+    .modal-box {
+      background: var(--white);
+      border-radius: 22px;
+      padding: 40px 44px;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.28);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(28px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    /* ── Advisory Modal ── */
+    .advisory-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 2px solid var(--neutral);
+    }
+
+    .warn-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--warn-yellow);
+      border: 2px solid var(--warn-border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .advisory-header h2 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      line-height: 1.3;
+    }
+
+    .modal-box p {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.75;
+    }
+
+    .highlight {
+      background: var(--warn-yellow);
+      border-left: 4px solid var(--warn-border);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark) !important;
+      line-height: 1.65;
+      margin-bottom: 0 !important;
+    }
+
+    .highlight strong { color: #B87800; }
+
+    /* ── ToS Modal ── */
+    .tos-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--neutral);
+    }
+
+    .tos-header .pot-icon { font-size: 30px; }
+
+    .tos-header h2 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .tos-list {
+      list-style: none;
+      margin: 0 0 18px;
+    }
+
+    .tos-list li {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-dark);
+      padding: 9px 12px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+      background: #F5FDFB;
+      border: 1px solid #D4EDE7;
+      line-height: 1.55;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .tos-list li .check { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+    .tos-agree-row {
+      background: var(--neutral);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .tos-agree-row:hover { background: #E0E0E0; }
+
+    .tos-agree-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      accent-color: var(--primary-mid);
+      cursor: pointer;
+    }
+
+    .tos-agree-row label {
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      line-height: 1.5;
+    }
+
+    .tos-link {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 12.5px;
+      color: var(--primary-mid);
+      margin-bottom: 16px;
+      text-decoration: none;
+      text-align: center;
+      letter-spacing: 0.2px;
+    }
+
+    .tos-link:hover { text-decoration: underline; }
+
+    /* ── Buttons ── */
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-primary {
+      background: var(--primary-mid);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(47,160,132,0.35);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(31,111,95,0.4);
+    }
+
+    .btn-google {
+      background: var(--white);
+      color: var(--text-dark);
+      border: 2px solid var(--neutral);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .btn-google:hover:not(:disabled) {
+      border-color: var(--primary-mid);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(47,160,132,0.2);
+    }
+
+    .btn-google:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .google-icon { width: 20px; height: 20px; }
+
+    /* ── Step indicator ── */
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--neutral);
+    }
+
+    .step-dot.active { background: var(--primary-mid); width: 24px; border-radius: 4px; }
+    .step-dot.done   { background: var(--accent-green); }
+
+    .hidden { display: none !important; }
+  </style>
 </head>
 <body>
 
-  <!-- ⚠️ Advisory Modal — Step 1 -->
-  <div id="advisory-modal" class="modal">
+  <!-- Background landing -->
+  <div class="landing">
+    <span class="logo-icon">🫕</span>
+    <h1>Dropot</h1>
+    <p>"Multiple droplets of water become the ocean."</p>
+  </div>
+
+  <!-- STEP 1 — Advisory Modal -->
+  <div class="overlay" id="advisory-overlay">
     <div class="modal-box">
+
+      <div class="step-indicator">
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+
       <div class="advisory-header">
-        <span class="warn-icon">⚠️</span>
+        <div class="warn-icon">⚠️</div>
         <h2>Important — Read Before Continuing</h2>
       </div>
+
       <p>This platform connects to your Google Drive to contribute storage to a shared group pool.</p>
       <p><strong>We strongly recommend using a dedicated Google account</strong> for privacy and safety.</p>
-      <p class="highlight">Even if you connect with your existing Gmail account — your personal files will never be touched. Only files uploaded through this platform to this group will be managed.</p>
-      <button id="advisory-ok" onclick="showToS()">Got it, show me the Terms</button>
+      <p class="highlight">
+        <strong>Even if you connect with your existing Gmail account</strong> — your personal files will never be touched. Only files uploaded through this platform to this group will be managed.
+      </p>
+
+      <button class="btn btn-primary" style="margin-top: 24px;" onclick="showToS()">
+        Got it, show me the Terms →
+      </button>
     </div>
   </div>
 
-  <!-- 📋 ToS Checklist — Step 2 -->
-  <div id="tos-modal" class="modal hidden">
+  <!-- STEP 2 — ToS Checklist Modal -->
+  <div class="overlay hidden" id="tos-overlay">
     <div class="modal-box">
-      <h2>Before You Join</h2>
+
+      <div class="step-indicator">
+        <div class="step-dot done"></div>
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+      </div>
+
+      <div class="tos-header">
+        <span class="pot-icon">🫕</span>
+        <h2>Before You Join</h2>
+      </div>
+
       <ul class="tos-list">
-        <li>✅ Your Google Drive will be connected to this group as shared storage</li>
-        <li>✅ Only files uploaded through this platform to the group are affected — your existing Google Drive content is never touched</li>
-        <li>✅ All group files are permanently deleted when the admin dismantles the group</li>
-        <li>✅ You will be notified before the group dismantles — flag Done only when you've downloaded what you need</li>
-        <li>✅ Use a dedicated Google account for group sharing — not your personal one</li>
-        <li>✅ Only share content you own or have the rights to share</li>
-        <li>✅ No illegal, harmful, or explicit content — violations are the uploader's sole responsibility</li>
-        <li>✅ This platform is a storage bridge — it does not host, own, or moderate your content</li>
+        <li><span class="check">✅</span> Your Google Drive will be connected to this group as shared storage</li>
+        <li><span class="check">✅</span> Only files uploaded through this platform are affected — your existing Google Drive content is never touched</li>
+        <li><span class="check">✅</span> All group files are permanently deleted when the admin dismantles the group</li>
+        <li><span class="check">✅</span> You will be notified before dismantling — flag Done only after downloading what you need</li>
+        <li><span class="check">✅</span> Use a dedicated Google account for group sharing — not your personal one</li>
+        <li><span class="check">✅</span> Only share content you own or have the rights to share</li>
+        <li><span class="check">✅</span> No illegal, harmful, or explicit content — violations are the uploader's sole responsibility</li>
+        <li><span class="check">✅</span> This platform is a storage bridge — it does not host, own, or moderate your content</li>
       </ul>
-      <label class="tos-check">
-        <input type="checkbox" id="tos-agree" onchange="toggleSignIn()" />
-        I have read and understood the above before joining this group
-      </label>
+
+      <div class="tos-agree-row" onclick="toggleCheck()">
+        <input type="checkbox" id="tos-agree" onchange="toggleSignIn()" onclick="event.stopPropagation()" />
+        <label for="tos-agree">I have read and understood the above before joining this group</label>
+      </div>
+
       <a href="#" class="tos-link">Full Terms of Service ↗</a>
-      <button id="signin-btn" class="disabled" disabled onclick="signInWithGoogle()">
+
+      <button class="btn btn-google" id="signin-btn" disabled onclick="signInWithGoogle()">
+        <svg class="google-icon" viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
         Sign in with Google
       </button>
     </div>
   </div>
 
-  <!-- 🏠 Main content (shown after auth) -->
-  <main id="main-content" class="hidden">
-    <!-- Dashboard loads here after sign in -->
-  </main>
+  <script>
+    function showToS() {
+      document.getElementById('advisory-overlay').classList.add('hidden');
+      document.getElementById('tos-overlay').classList.remove('hidden');
+    }
 
-  <script src="js/auth.js"></script>
-  <script src="js/app.js"></script>
+    function toggleCheck() {
+      const cb = document.getElementById('tos-agree');
+      cb.checked = !cb.checked;
+      toggleSignIn();
+    }
+
+    function toggleSignIn() {
+      const agreed = document.getElementById('tos-agree').checked;
+      document.getElementById('signin-btn').disabled = !agreed;
+    }
+
+    function signInWithGoogle() {
+      alert('🫕 Google Sign-In coming in next build session!');
+    }
+  </script>
+
 </body>
 </html>
