@@ -37,8 +37,7 @@ app = Flask(__name__)
 FRONTEND_URL         = os.environ.get("FRONTEND_URL", "https://code-manigopal.github.io/dropot")
 GOOGLE_CLIENT_ID     = os.environ.get("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
-VERCEL_URL           = os.environ.get("VERCEL_URL", "dropot.vercel.app")
-REDIRECT_URI         = f"https://{VERCEL_URL}/api/auth/callback"
+REDIRECT_URI         = os.environ.get("REDIRECT_URI", "https://dropot.vercel.app/api/auth/callback")
 
 CORS(app, origins=[FRONTEND_URL], supports_credentials=True)
 
