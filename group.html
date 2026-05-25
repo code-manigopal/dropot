@@ -543,9 +543,6 @@
              collection, addDoc, getDocs, query, where,
              onSnapshot, serverTimestamp, arrayUnion }
       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytesResumable,
-             getDownloadURL, deleteObject }
-      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
     // 🔧 REPLACE with your Firebase config
     const firebaseConfig = {
@@ -563,24 +560,27 @@
     const storage = getStorage(app);
 
     let currentUser = null;
-    let groupId = null;
-    let groupData = null;
-    let allFiles = [];
+    let groupId     = null;
+    let groupData   = null;
+    let allFiles    = [];
     let activeFilter = 'all';
+    let driveToken  = null;
+
+    const BACKEND = "https://dropot.vercel.app";
 
     // Get group ID from URL
-    const params = new URLSearchParams(window.location.search);
-    groupId = params.get('id');
+    const params   = new URLSearchParams(window.location.search);
+    groupId        = params.get('id');
     const isJoining = params.get('join') === 'true';
 
-    if (!groupId) {
-      window.location.href = 'dashboard.html';
-    }
+    if (!groupId) window.location.href = 'dashboard.html';
 
     // Auth
     onAuthStateChanged(auth, async (user) => {
       if (!user) { window.location.href = 'index.html'; return; }
       currentUser = user;
+      driveToken  = sessionStorage.getItem("dropot_drive_token");
+      if (!driveToken) { window.location.href = 'index.html'; return; }
       await loadGroup();
       if (isJoining) await joinGroup();
       listenToFiles();
@@ -716,8 +716,8 @@
               <div class="file-meta">${formatSize(f.size)} · ${f.uploaderName || 'Unknown'}</div>
             </div>
             <div class="file-actions">
-              <button class="btn-dl" onclick="downloadFile('${f.url}','${f.name}')">⬇ Download</button>
-              ${isOwner ? `<button class="btn-del" onclick="deleteFile('${f.id}','${f.storagePath}')">✕</button>` : ''}
+              <button class="btn-dl" onclick="downloadFile('${f.viewUrl}','${f.name}')">⬇ Download</button>
+              ${isOwner ? `<button class="btn-del" onclick="deleteFile('${f.id}','${f.driveFileId}')">✕</button>` : ''}
             </div>
           </div>`;
       }).join('');
@@ -725,36 +725,62 @@
 
     // Handle file upload
     window.handleFiles = function(files) { uploadFiles(Array.from(files)); };
-    window.handleDrop = function(e) {
+    window.handleDrop  = function(e) {
       e.preventDefault();
       document.getElementById('upload-zone').classList.remove('dragover');
-      uploadFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image') || f.type.startsWith('video')));
+      uploadFiles(Array.from(e.dataTransfer.files)
+        .filter(f => f.type.startsWith('image') || f.type.startsWith('video')));
     };
 
     async function uploadFiles(files) {
       if (!files.length) return;
       for (const file of files) {
         showToast(`⬆ Uploading ${file.name}...`);
-        const path = `groups/${groupId}/${Date.now()}_${file.name}`;
-        const storageRef = ref(storage, path);
-        const task = uploadBytesResumable(storageRef, file);
-        await new Promise((resolve, reject) => {
-          task.on('state_changed', null, reject, async () => {
-            const url = await getDownloadURL(task.snapshot.ref);
-            await addDoc(collection(db, 'groups', groupId, 'files'), {
-              name: file.name,
-              url,
-              storagePath: path,
-              type: file.type,
-              size: file.size,
-              uploadedBy: currentUser.uid,
-              uploaderName: currentUser.displayName || currentUser.email,
-              uploadedAt: serverTimestamp()
-            });
-            resolve();
+        try {
+          // Convert file to base64
+          const base64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload  = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
           });
-        });
-        showToast(`✅ ${file.name} uploaded!`);
+
+          // Upload to user's Google Drive via Vercel backend
+          const res = await fetch(`${BACKEND}/api/drive/upload`, {
+            method:  'POST',
+            headers: {
+              'Content-Type':  'application/json',
+              'Authorization': `Bearer ${driveToken}`
+            },
+            body: JSON.stringify({
+              name:    file.name,
+              content: base64,
+              type:    file.type,
+              groupId: groupId
+            })
+          });
+
+          const data = await res.json();
+          if (data.error) { showToast(`❌ Upload failed: ${data.error}`); continue; }
+
+          // Save file metadata to Firestore
+          await addDoc(collection(db, 'groups', groupId, 'files'), {
+            name:         file.name,
+            url:          data.url,
+            viewUrl:      data.viewUrl,
+            driveFileId:  data.fileId,
+            type:         file.type,
+            size:         file.size,
+            uploadedBy:   currentUser.uid,
+            uploaderName: currentUser.displayName || currentUser.email,
+            uploadedAt:   serverTimestamp()
+          });
+
+          showToast(`✅ ${file.name} uploaded to your Drive!`);
+        } catch(e) {
+          console.error(e);
+          showToast(`❌ Upload failed for ${file.name}`);
+        }
       }
     }
 
@@ -767,11 +793,20 @@
     };
 
     // Delete file
-    window.deleteFile = async function(fileId, storagePath) {
+    window.deleteFile = async function(fileId, driveFileId) {
       if (!confirm('Delete this file?')) return;
       try {
+        // Delete from Google Drive via backend
+        await fetch(`${BACKEND}/api/drive/delete`, {
+          method:  'POST',
+          headers: {
+            'Content-Type':  'application/json',
+            'Authorization': `Bearer ${driveToken}`
+          },
+          body: JSON.stringify({ fileId: driveFileId })
+        });
+        // Delete metadata from Firestore
         await deleteDoc(doc(db, 'groups', groupId, 'files', fileId));
-        await deleteObject(ref(storage, storagePath));
         showToast('🗑 File deleted');
       } catch(e) { console.error(e); showToast('Error deleting file'); }
     };

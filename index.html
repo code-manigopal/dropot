@@ -451,6 +451,7 @@
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged }
       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+    // 🔧 REPLACE with your Firebase config
     const firebaseConfig = {
       apiKey: "REPLACE_WITH_YOUR_API_KEY",
       authDomain: "REPLACE_WITH_YOUR_AUTH_DOMAIN",
@@ -460,20 +461,43 @@
       appId: "REPLACE_WITH_YOUR_APP_ID"
     };
 
-    const app = initializeApp(firebaseConfig);
+    const app  = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    // If already signed in → go straight to dashboard
     onAuthStateChanged(auth, (user) => {
-      if (user) window.location.href = "dashboard.html";
+      if (user && sessionStorage.getItem("dropot_drive_token")) {
+        window.location.href = "dashboard.html";
+      }
     });
 
     window.signInWithGoogle = async function() {
       const provider = new GoogleAuthProvider();
+
+      // Step 1 — Firebase identity (no restrictions, works like SplitFree)
+      // Step 2 — Drive scope requested in same popup (one consent screen)
       provider.addScope("https://www.googleapis.com/auth/drive.file");
+      provider.addScope("https://www.googleapis.com/auth/gmail.send");
+
       try {
-        await signInWithPopup(auth, provider);
+        const result = await signInWithPopup(auth, provider);
+
+        // Get the Drive access token from the credential
+        const credential   = GoogleAuthProvider.credentialFromResult(result);
+        const driveToken   = credential.accessToken;
+        const user         = result.user;
+
+        // Store Drive token for API calls — session only, never persisted
+        sessionStorage.setItem("dropot_drive_token", driveToken);
+        sessionStorage.setItem("dropot_user_name",   user.displayName);
+        sessionStorage.setItem("dropot_user_email",  user.email);
+        sessionStorage.setItem("dropot_user_uid",    user.uid);
+
+        window.location.href = "dashboard.html";
+
       } catch(e) {
         console.error(e);
+        if (e.code === "auth/popup-closed-by-user") return;
         alert("Sign-in failed. Please try again.");
       }
     };
