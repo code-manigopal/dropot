@@ -262,17 +262,7 @@
       line-height: 1.5;
     }
 
-    .tos-link {
-      display: block;
-      font-family: var(--font-body);
-      font-size: 12px;
-      color: var(--primary-mid);
-      margin-top: 8px;
-      text-decoration: none;
-      text-align: center;
-    }
 
-    .tos-link:hover { text-decoration: underline; }
 
     /* ── Buttons ── */
     .btn {
@@ -405,10 +395,10 @@
         <li><span class="check">✅</span> Only files uploaded through this platform are affected — your existing Google Drive content is never touched</li>
         <li><span class="check">✅</span> All group files are permanently deleted when the admin dismantles the group</li>
         <li><span class="check">✅</span> You will be notified before dismantling — flag Done only after downloading what you need</li>
-        <li><span class="check">✅</span> Use a dedicated Google account for group sharing — not your personal one</li>
         <li><span class="check">✅</span> Only share content you own or have the rights to share</li>
         <li><span class="check">✅</span> No illegal, harmful, or explicit content — violations are the uploader's sole responsibility</li>
         <li><span class="check">✅</span> This platform is a storage bridge — it does not host, own, or moderate your content</li>
+        <li><span class="check">✅</span> Dropot does not retain copies of your files — all data lives in your connected Google Drive</li>
       </ul>
 
       <div class="tos-bottom">
@@ -417,7 +407,6 @@
             <input type="checkbox" id="tos-agree" onchange="toggleSignIn()" onclick="event.stopPropagation()" />
             <label for="tos-agree">I have read and understood the above before joining this group</label>
           </div>
-          <a href="#" class="tos-link">Full Terms of Service ↗</a>
         </div>
 
         <button class="btn btn-google" id="signin-btn" disabled onclick="signInWithGoogle()">
@@ -452,9 +441,42 @@
     }
 
     function signInWithGoogle() {
-      alert('🫕 Google Sign-In coming in next build session!');
+      window.location.href = "dashboard.html";
     }
   </script>
 
+  <!-- Firebase Auth -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "REPLACE_WITH_YOUR_API_KEY",
+      authDomain: "REPLACE_WITH_YOUR_AUTH_DOMAIN",
+      projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+      storageBucket: "REPLACE_WITH_YOUR_STORAGE_BUCKET",
+      messagingSenderId: "REPLACE_WITH_YOUR_MESSAGING_SENDER_ID",
+      appId: "REPLACE_WITH_YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = "dashboard.html";
+    });
+
+    window.signInWithGoogle = async function() {
+      const provider = new GoogleAuthProvider();
+      provider.addScope("https://www.googleapis.com/auth/drive.file");
+      try {
+        await signInWithPopup(auth, provider);
+      } catch(e) {
+        console.error(e);
+        alert("Sign-in failed. Please try again.");
+      }
+    };
+  </script>
 </body>
 </html>
