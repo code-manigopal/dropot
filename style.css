@@ -17,6 +17,9 @@
   --text-muted:    #555555;
   --warn-yellow:   #FFF3CD;
   --warn-border:   #F0A500;
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'IBM Plex Sans', sans-serif;
+  --font-mono:    'IBM Plex Mono', monospace;
 }
 
 body {
