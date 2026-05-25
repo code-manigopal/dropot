@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/auth.py":   { "runtime": "python3.9" },
-    "api/drive.py":  { "runtime": "python3.9" },
-    "api/groups.py": { "runtime": "python3.9" },
-    "api/notify.py": { "runtime": "python3.9" }
-  },
   "routes": [
     { "src": "/api/auth/(.*)",   "dest": "/api/auth.py" },
     { "src": "/api/drive/(.*)",  "dest": "/api/drive.py" },
