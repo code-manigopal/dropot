@@ -427,17 +427,14 @@
     <div class="ocean">
 
       <!-- Upload Zone -->
-      <div class="upload-zone" id="upload-zone"
-           ondragover="event.preventDefault();this.classList.add('dragover')"
-           ondragleave="this.classList.remove('dragover')"
-           ondrop="handleDrop(event)">
+      <div class="upload-zone" id="upload-zone">
         <span class="upload-icon">📸</span>
         <h3>Drop photos & videos into the ocean</h3>
         <p>Drag & drop files here, or click to browse. Images and videos only.</p>
         <button class="btn-upload" onclick="document.getElementById('file-input').click()">
           Choose Files
         </button>
-        <input type="file" id="file-input" multiple accept="image/*,video/*" onchange="handleFiles(this.files)"/>
+        <input type="file" id="file-input" multiple accept="image/*,video/*"/>
       </div>
 
       <!-- Filter Bar -->
@@ -546,19 +543,18 @@
 
     // 🔧 REPLACE with your Firebase config
     const firebaseConfig = {
-  apiKey: "AIzaSyDLF8iDm7DbRtcW6804FmV8vK_pmu0hcjM",
-  authDomain: "dropot-ac097.firebaseapp.com",
-  projectId: "dropot-ac097",
-  storageBucket: "dropot-ac097.firebasestorage.app",
-  messagingSenderId: "405186629882",
-  appId: "1:405186629882:web:fcd300d6d54153ce71f943",
-  measurementId: "G-XFEL27XXZ2"
-};
+      apiKey: "REPLACE_WITH_YOUR_API_KEY",
+      authDomain: "REPLACE_WITH_YOUR_AUTH_DOMAIN",
+      projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+      storageBucket: "REPLACE_WITH_YOUR_STORAGE_BUCKET",
+      messagingSenderId: "REPLACE_WITH_YOUR_MESSAGING_SENDER_ID",
+      appId: "REPLACE_WITH_YOUR_APP_ID"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    //const storage = getStorage(app);
+    // Storage handled via Vercel Drive API
 
     let currentUser = null;
     let groupId     = null;
@@ -585,6 +581,24 @@
       await loadGroup();
       if (isJoining) await joinGroup();
       listenToFiles();
+
+      // Attach file input listeners here inside module
+      document.getElementById('file-input').addEventListener('change', (e) => {
+        uploadFiles(Array.from(e.target.files));
+      });
+      document.getElementById('upload-zone').addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.currentTarget.classList.add('dragover');
+      });
+      document.getElementById('upload-zone').addEventListener('dragleave', (e) => {
+        e.currentTarget.classList.remove('dragover');
+      });
+      document.getElementById('upload-zone').addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.currentTarget.classList.remove('dragover');
+        uploadFiles(Array.from(e.dataTransfer.files)
+          .filter(f => f.type.startsWith('image') || f.type.startsWith('video')));
+      });
     });
 
     // Load group data
@@ -836,10 +850,19 @@
       closeModals();
       showToast('🔥 Dismantling group...');
       try {
-        // Delete all files from storage
+        // Delete all files from Drive via backend
         const filesSnap = await getDocs(collection(db, 'groups', groupId, 'files'));
         for (const f of filesSnap.docs) {
-          try { await deleteObject(ref(storage, f.data().storagePath)); } catch(e) {}
+          try {
+            await fetch(`${BACKEND}/api/drive/delete`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${driveToken}`
+              },
+              body: JSON.stringify({ fileId: f.data().driveFileId })
+            });
+          } catch(e) {}
           await deleteDoc(f.ref);
         }
         // Delete group document
