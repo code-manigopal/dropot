@@ -230,3 +230,71 @@ OPEN QUESTIONS
 ================================================================================
 END OF SESSION 2
 ================================================================================
+
+================================================================================
+SESSION 3 — 2026-05-25 (continued)
+================================================================================
+
+--------------------------------------------------------------------------------
+PROMPT 19: GitHub Pages Issue — No Result Found
+--------------------------------------------------------------------------------
+shows no result found
+[Root cause: GitHub Pages set to / root but index.html was inside /frontend/]
+
+Fix applied: Moved index.html to root level with all CSS embedded inline.
+Same approach as SplitFree — single file, no external dependencies.
+
+--------------------------------------------------------------------------------
+PROMPT 20: Font Styling — Match SplitFree
+--------------------------------------------------------------------------------
+can we also follow the same font styling like we used for splitfree?
+[SplitFree used: Syne + IBM Plex Mono + IBM Plex Sans via Google Fonts]
+
+Decision: Use Nirmala UI instead — system font, zero external requests,
+instant load, no Google Fonts dependency.
+
+Font stack applied:
+--font-display: 'Nirmala UI', 'Segoe UI', 'Arial Unicode MS', sans-serif;
+--font-body:    'Nirmala UI', 'Segoe UI', Arial, sans-serif;
+--font-mono:    'Nirmala UI', 'Consolas', 'Courier New', monospace;
+
+--------------------------------------------------------------------------------
+PROMPT 21: Space Utilization
+--------------------------------------------------------------------------------
+[Screenshot shared — modal too narrow, not using full screen width]
+can we utilize the space properly
+
+Fix applied:
+- Advisory modal → two columns (text left, highlight right)
+- ToS list → two-column grid (4 items per row)
+- Agree checkbox + Sign in button → side by side same row
+- Modal max-width expanded from 540px to 820px
+- Mobile responsive → collapses to single column on small screens
+
+================================================================================
+DECISIONS SNAPSHOT — After Session 3
+================================================================================
+
+| Dimension             | Decision                                              |
+|-----------------------|-------------------------------------------------------|
+| GitHub Pages setup    | Root / deployment, single index.html                 |
+| CSS approach          | Fully embedded in HTML — no external CSS file         |
+| Font                  | Nirmala UI (system font, zero external requests)      |
+| Advisory layout       | Two-column on desktop, single on mobile               |
+| ToS layout            | Two-column grid on desktop, single on mobile          |
+| Modal width           | 820px max-width                                       |
+| Step indicator        | 3-dot progress bar on both modals                     |
+
+================================================================================
+OPEN QUESTIONS
+================================================================================
+
+[ ] Group invite flow — code, link, or email?
+[ ] Additional storage providers beyond Google Drive
+[ ] Logo SVG design (photo + video icons falling into pot)
+[ ] Firebase vs alternative for database
+[ ] Dashboard page (after sign-in) — next build session
+
+================================================================================
+END OF SESSION 3
+================================================================================
