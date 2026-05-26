@@ -500,3 +500,154 @@ OPEN ITEMS
 ================================================================================
 END OF SESSION 4
 ================================================================================
+
+================================================================================
+SESSION 5 — 2026-05-25 (continued)
+================================================================================
+
+--------------------------------------------------------------------------------
+PROMPT 36: Ocean Pool Question
+--------------------------------------------------------------------------------
+can you explain how the ocean pool is working
+
+CLARIFICATION: Ocean pool was a visual estimate only — not real integrated storage.
+- Pool size = members × 15 GB (assumed, not actual Drive quota)
+- Used = sum of all file sizes in Firestore metadata
+- NOT tracking actual Drive free space per member
+
+DECISION: Remove ocean pool — misleading more than helpful
+
+--------------------------------------------------------------------------------
+PROMPT 37: Download UX Improvement
+--------------------------------------------------------------------------------
+while downloading, can we skip it from opening the drive link?
+
+FIX: Download now uses Google Drive API directly from browser:
+- Fetches file as blob using Drive token
+- Creates object URL and triggers native browser download
+- No Drive tab opened, no redirect, stays on Dropot
+
+--------------------------------------------------------------------------------
+PROMPT 38: Pre-build Review
+--------------------------------------------------------------------------------
+before building, are we missing anything?
+
+FULL REVIEW COMPLETED:
+Issues identified:
+- Ocean pool misleading → Remove
+- Invite link doesn't auto-join → Fix
+- After sign-in always goes to dashboard → Fix
+- No loading indicator during upload → Add
+- No file preview → Add
+- Notify pending members not wired → Add
+- Leave request flow not built → Add
+- Drive token expires silently → Handle
+
+Out of scope (future):
+- Mobile app
+- Additional storage providers
+- Physical storage
+- SplitFree integration
+- Logo SVG
+
+--------------------------------------------------------------------------------
+PROMPT 39: Build All Fixes
+--------------------------------------------------------------------------------
+okay add all at once.
+
+CHANGES BUILT:
+
+index.html:
+- Remembers invite group ID in sessionStorage before sign-in
+- After sign-in redirects to group directly (not dashboard)
+- Invite link now uses index.html?id=GROUP_ID format
+
+group.html (full rebuild):
+- Ocean pool REMOVED completely
+- Invite link auto-join flow fixed
+- Upload progress bar (shows file X of Y + filename)
+- File preview modal (click photo → full size; click video → player)
+- Direct download via Drive API blob (no redirect)
+- Download button shows ⏳ while downloading
+- Leave request flow for non-admin members
+  → Modal with optional reason
+  → Stored in Firestore (leaveRequested: true)
+  → Admin sees 🚪 indicator on member
+  → Button changes to "⏳ Leave Request Sent"
+- Notify pending members button for admin
+  → Calls Vercel /api/notify/pending
+  → Sends email to all members who haven't flagged Done
+- Folder naming: "Dropot — {GroupName} ({MemberName})"
+
+--------------------------------------------------------------------------------
+PROMPT 40: Architecture Clarification
+--------------------------------------------------------------------------------
+so this is not an integrated storage? just a visual abstract as we can
+access all things in one place?
+
+HONEST ANSWER:
+What users SEE: One shared ocean, all files together
+What actually happens: Each person uploads to THEIR OWN Drive,
+Firestore stores metadata/links, Dropot shows everything together in one UI
+
+This is actually BETTER than true integrated storage:
+- Files never leave uploader's own Drive
+- No migration on member exit needed
+- Stronger transparency identity
+- No single point of failure
+
+DECISION: Keep this architecture. Rename mental model from
+"integrated storage" to "shared collection with distributed storage"
+
+--------------------------------------------------------------------------------
+PROMPT 41: Folder Naming
+--------------------------------------------------------------------------------
+group name and person name, so that it will be easy to understand
+
+CHANGE: Drive folder name updated from:
+  "Dropot-{groupId}"  →  "Dropot — {GroupName} ({MemberName})"
+
+Example: "Dropot — Tobermory Trip 2026 (Manikandan Gopal)"
+Each member sees their own named folder in their Drive.
+
+================================================================================
+DECISIONS SNAPSHOT — After Session 5
+================================================================================
+
+| Dimension              | Decision                                              |
+|------------------------|-------------------------------------------------------|
+| Ocean pool             | REMOVED — was misleading visual estimate              |
+| File storage model     | Each member's own Drive, metadata in Firestore        |
+| Drive folder name      | "Dropot — {GroupName} ({MemberName})"                 |
+| Invite flow            | index.html?id=X → sign in → auto-join group           |
+| Download               | Direct blob download via Drive API, no redirect       |
+| Upload UX              | Progress bar with file count                          |
+| File preview           | Full-size modal for images, video player for videos   |
+| Leave request          | Modal → stored in Firestore → admin notified          |
+| Notify pending         | Admin button → Vercel /api/notify/pending             |
+
+================================================================================
+LIVE STATUS
+================================================================================
+
+Frontend:  https://code-manigopal.github.io/dropot  ✅ Live
+Backend:   https://dropot.vercel.app                 ✅ Live
+Firebase:  dropot-ac097                              ✅ Live
+Firestore: (default) database                        ✅ Live
+
+================================================================================
+OPEN ITEMS
+================================================================================
+
+[ ] Test full upload → download → Done flag → dismantle end-to-end
+[ ] Verify CORS fix on upload (origin fix deployed)
+[ ] Clean up duplicate test groups in Firestore console
+[ ] Add more test users in Google Cloud OAuth consent screen
+[ ] Logo design — SVG (photo + video icons falling into pot)
+[ ] Mobile responsive testing
+[ ] Firestore security rules tightening (post-MVP)
+[ ] Mobile app (Android + iOS) — future version
+
+================================================================================
+END OF SESSION 5
+================================================================================
