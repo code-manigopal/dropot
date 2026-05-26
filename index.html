@@ -162,9 +162,21 @@
     const app  = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    // Check if landing here from an invite link — save it
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteId  = urlParams.get('id');
+    if (inviteId) sessionStorage.setItem("dropot_invite_id", inviteId);
+
+    // If already signed in → go to right place
     onAuthStateChanged(auth, (user) => {
       if (user && sessionStorage.getItem("dropot_drive_token")) {
-        window.location.href = "dashboard.html";
+        const savedInvite = sessionStorage.getItem("dropot_invite_id");
+        if (savedInvite) {
+          sessionStorage.removeItem("dropot_invite_id");
+          window.location.href = `group.html?id=${savedInvite}&join=true`;
+        } else {
+          window.location.href = "dashboard.html";
+        }
       }
     });
 
@@ -181,7 +193,13 @@
         sessionStorage.setItem("dropot_user_name",   user.displayName);
         sessionStorage.setItem("dropot_user_email",  user.email);
         sessionStorage.setItem("dropot_user_uid",    user.uid);
-        window.location.href = "dashboard.html";
+        const savedInvite = sessionStorage.getItem("dropot_invite_id");
+        if (savedInvite) {
+          sessionStorage.removeItem("dropot_invite_id");
+          window.location.href = `group.html?id=${savedInvite}&join=true`;
+        } else {
+          window.location.href = "dashboard.html";
+        }
       } catch(e) {
         if (e.code === "auth/popup-closed-by-user") return;
         console.error(e);
