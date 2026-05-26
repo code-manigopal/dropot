@@ -16,84 +16,112 @@
     body{font-family:var(--fb);background:var(--neu);min-height:100vh;}
     .header{background:var(--pd);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.15);position:sticky;top:0;z-index:50;}
     .header-left{display:flex;align-items:center;gap:16px;}
-    .back-btn{color:rgba(255,255,255,0.7);text-decoration:none;font-size:22px;transition:color 0.2s;}
+    .back-btn{color:rgba(255,255,255,0.7);text-decoration:none;font-size:22px;}
     .back-btn:hover{color:white;}
     .header-logo{font-family:var(--fd);font-size:20px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;}
     .group-title{font-family:var(--fd);font-size:16px;font-weight:600;color:rgba(255,255,255,0.75);}
     .invite-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:8px 16px;border-radius:8px;font-family:var(--fd);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
     .invite-btn:hover{background:rgba(255,255,255,0.25);}
-    .layout{display:grid;grid-template-columns:1fr 300px;min-height:calc(100vh - 64px);}
-    .ocean{padding:28px 32px;}
-    .upload-zone{background:var(--white);border:2px dashed var(--pm);border-radius:16px;padding:32px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:24px;}
+    .layout{display:grid;grid-template-columns:1fr 280px;min-height:calc(100vh - 64px);}
+    .ocean{padding:24px 28px;}
+    .upload-zone{background:var(--white);border:2px dashed var(--pm);border-radius:16px;padding:28px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:20px;}
     .upload-zone:hover,.upload-zone.dragover{background:#F0FBF8;border-color:var(--pd);}
-    .upload-zone .upload-icon{font-size:40px;margin-bottom:10px;display:block;}
-    .upload-zone h3{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--pd);margin-bottom:6px;}
-    .upload-zone p{font-size:13px;color:var(--muted);margin-bottom:16px;}
-    .btn-upload{background:var(--pm);color:white;border:none;padding:10px 24px;border-radius:8px;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+    .upload-zone.uploading{border-color:var(--ag);background:#F0FBF8;pointer-events:none;}
+    .upload-icon{font-size:36px;margin-bottom:8px;display:block;}
+    .upload-zone h3{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--pd);margin-bottom:4px;}
+    .upload-zone p{font-size:12px;color:var(--muted);margin-bottom:14px;}
+    .btn-upload{background:var(--pm);color:white;border:none;padding:9px 20px;border-radius:8px;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;}
     .btn-upload:hover{background:var(--pd);}
-    .filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+    .upload-progress{display:none;margin-top:12px;}
+    .upload-progress.show{display:block;}
+    .progress-bar{background:var(--neu);border-radius:8px;height:8px;overflow:hidden;margin-bottom:6px;}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--pm),var(--ag));border-radius:8px;transition:width 0.3s ease;width:0%;}
+    .progress-label{font-family:var(--fm);font-size:12px;color:var(--muted);text-align:center;}
+    .filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
     .filter-label{font-family:var(--fd);font-size:13px;font-weight:600;color:var(--muted);}
-    .filter-btn{padding:6px 14px;border-radius:20px;border:1.5px solid var(--neu);background:var(--white);font-family:var(--fd);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;color:var(--muted);}
+    .filter-btn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--neu);background:var(--white);font-family:var(--fd);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;color:var(--muted);}
     .filter-btn.active{background:var(--pm);color:white;border-color:var(--pm);}
-    .files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;}
-    .file-card{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.06);border:1.5px solid #E8E8E8;transition:all 0.2s;}
-    .file-card:hover{border-color:var(--pm);transform:translateY(-2px);box-shadow:0 6px 20px rgba(47,160,132,0.12);}
-    .file-thumb{width:100%;height:130px;background:linear-gradient(135deg,#E8F5F2,#D4EDE7);display:flex;align-items:center;justify-content:center;font-size:42px;overflow:hidden;}
-    .file-thumb img{width:100%;height:100%;object-fit:cover;}
-    .file-info{padding:10px 12px;}
-    .file-name{font-family:var(--fd);font-size:12px;font-weight:600;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;}
-    .file-meta{font-family:var(--fm);font-size:11px;color:var(--muted);}
-    .file-actions{padding:8px 12px;border-top:1px solid var(--neu);display:flex;gap:6px;}
-    .btn-dl{flex:1;padding:6px;background:var(--pm);color:white;border:none;border-radius:6px;font-family:var(--fd);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+    .files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:14px;}
+    .file-card{background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.06);border:1.5px solid #E8E8E8;transition:all 0.2s;}
+    .file-card:hover{border-color:var(--pm);transform:translateY(-2px);}
+    .file-thumb{width:100%;height:120px;background:linear-gradient(135deg,#E8F5F2,#D4EDE7);display:flex;align-items:center;justify-content:center;font-size:38px;overflow:hidden;cursor:pointer;position:relative;}
+    .file-thumb img{width:100%;height:100%;object-fit:cover;transition:transform 0.2s;}
+    .file-thumb:hover img{transform:scale(1.05);}
+    .play-icon{position:absolute;background:rgba(0,0,0,0.5);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;}
+    .file-info{padding:8px 10px;}
+    .file-name{font-family:var(--fd);font-size:11px;font-weight:600;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;}
+    .file-meta{font-family:var(--fm);font-size:10px;color:var(--muted);}
+    .file-actions{padding:7px 10px;border-top:1px solid var(--neu);display:flex;gap:5px;}
+    .btn-dl{flex:1;padding:5px;background:var(--pm);color:white;border:none;border-radius:6px;font-family:var(--fd);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;}
     .btn-dl:hover{background:var(--pd);}
-    .btn-del{padding:6px 8px;background:var(--neu);color:var(--red);border:none;border-radius:6px;font-family:var(--fd);font-size:11px;font-weight:700;cursor:pointer;}
+    .btn-dl.downloading{background:var(--ag);color:var(--pd);cursor:wait;}
+    .btn-del{padding:5px 7px;background:var(--neu);color:var(--red);border:none;border-radius:6px;cursor:pointer;}
     .btn-del:hover{background:#FFE5E5;}
     .files-empty{grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);font-size:15px;}
     .files-empty .empty-icon{font-size:48px;display:block;margin-bottom:12px;}
-    .sidebar{background:var(--white);border-left:1px solid #E0E0E0;padding:24px 20px;display:flex;flex-direction:column;gap:24px;overflow-y:auto;height:calc(100vh - 64px);position:sticky;top:64px;}
-    .sidebar-section-title{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--pd);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;}
-    .pool-bar{background:var(--neu);border-radius:8px;height:10px;overflow:hidden;margin-bottom:8px;}
-    .pool-fill{height:100%;background:linear-gradient(90deg,var(--pm),var(--ag));border-radius:8px;transition:width 0.5s ease;}
-    .pool-stats{display:flex;justify-content:space-between;font-family:var(--fm);font-size:11px;color:var(--muted);}
-    .member-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--neu);}
+    .sidebar{background:var(--white);border-left:1px solid #E0E0E0;padding:20px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;height:calc(100vh - 64px);position:sticky;top:64px;}
+    .sidebar-section-title{font-family:var(--fd);font-size:12px;font-weight:700;color:var(--pd);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
+    .member-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--neu);}
     .member-item:last-child{border-bottom:none;}
-    .member-avatar{width:34px;height:34px;border-radius:50%;background:var(--pm);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:700;font-size:13px;color:white;flex-shrink:0;}
-    .member-info{flex:1;}
-    .member-name{font-family:var(--fd);font-size:13px;font-weight:600;color:var(--dark);}
-    .member-role{font-family:var(--fm);font-size:11px;color:var(--muted);}
-    .done-flag{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:2px solid var(--neu);background:var(--neu);}
-    .done-flag.green{background:var(--ag);border-color:var(--ag);}
-    .done-section{background:linear-gradient(135deg,#F0FBF8,#E8F5F2);border:2px solid var(--ag);border-radius:14px;padding:18px;text-align:center;}
-    .done-section h4{font-family:var(--fd);font-size:14px;font-weight:700;color:var(--pd);margin-bottom:6px;}
-    .done-section p{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
-    .btn-done{width:100%;padding:12px;background:var(--ag);color:var(--pd);border:none;border-radius:10px;font-family:var(--fd);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+    .member-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:700;font-size:12px;color:white;flex-shrink:0;}
+    .member-info{flex:1;min-width:0;}
+    .member-name{font-family:var(--fd);font-size:12px;font-weight:600;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .member-role{font-family:var(--fm);font-size:10px;color:var(--muted);}
+    .done-flag{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;background:var(--neu);}
+    .done-flag.green{background:var(--ag);}
+    .done-section{background:linear-gradient(135deg,#F0FBF8,#E8F5F2);border:2px solid var(--ag);border-radius:12px;padding:16px;text-align:center;}
+    .done-section h4{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--pd);margin-bottom:5px;}
+    .done-section p{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.5;}
+    .btn-done{width:100%;padding:10px;background:var(--ag);color:var(--pd);border:none;border-radius:8px;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;}
     .btn-done:hover{background:#5BC280;color:white;}
     .btn-done.flagged{background:#E8F5E9;color:#2E7D32;cursor:default;}
-    .admin-section{background:#FFF5F5;border:2px solid #FFCCCC;border-radius:14px;padding:18px;text-align:center;}
-    .admin-section h4{font-family:var(--fd);font-size:14px;font-weight:700;color:var(--red);margin-bottom:6px;}
-    .admin-section p{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
-    .btn-dismantle{width:100%;padding:12px;background:var(--red);color:white;border:none;border-radius:10px;font-family:var(--fd);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+    .leave-section{background:#FFF9F0;border:2px solid #FFE0B2;border-radius:12px;padding:16px;text-align:center;}
+    .leave-section h4{font-family:var(--fd);font-size:13px;font-weight:700;color:#E65100;margin-bottom:5px;}
+    .leave-section p{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.5;}
+    .btn-leave{width:100%;padding:10px;background:#FF9800;color:white;border:none;border-radius:8px;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;}
+    .btn-leave:hover{background:#E65100;}
+    .btn-leave.requested{background:#FFE0B2;color:#E65100;cursor:default;}
+    .admin-section{background:#FFF5F5;border:2px solid #FFCCCC;border-radius:12px;padding:16px;text-align:center;}
+    .admin-section h4{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--red);margin-bottom:5px;}
+    .admin-section p{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.5;}
+    .btn-dismantle{width:100%;padding:10px;background:var(--red);color:white;border:none;border-radius:8px;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;}
     .btn-dismantle:hover{background:#D32F2F;}
     .btn-dismantle:disabled{background:#FFCCCC;color:#FF9999;cursor:not-allowed;}
-    .dismantle-hint{font-family:var(--fm);font-size:11px;color:var(--red);margin-top:8px;}
+    .dismantle-hint{font-family:var(--fm);font-size:10px;color:var(--red);margin-top:6px;}
+    .btn-notify{width:100%;padding:8px;background:var(--neu);color:var(--pd);border:1.5px solid var(--pm);border-radius:8px;font-family:var(--fd);font-size:12px;font-weight:700;cursor:pointer;margin-top:8px;}
+    .btn-notify:hover{background:var(--pm);color:white;}
     .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--dark);color:white;padding:12px 24px;border-radius:10px;font-family:var(--fd);font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:999;animation:fadeInUp 0.3s ease;white-space:nowrap;}
     .toast.hidden{display:none;}
     @keyframes fadeInUp{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;}
     .overlay.hidden{display:none;}
-    .modal{background:var(--white);border-radius:20px;padding:36px 40px;max-width:440px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.25);animation:slideUp 0.25s ease;text-align:center;}
+    .modal{background:var(--white);border-radius:20px;padding:32px 36px;max-width:440px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.25);animation:slideUp 0.25s ease;text-align:center;}
     @keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-    .modal .modal-icon{font-size:48px;display:block;margin-bottom:16px;}
-    .modal h3{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--dark);margin-bottom:10px;}
-    .modal p{font-family:var(--fb);font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:24px;}
-    .invite-link-box{background:var(--neu);border-radius:10px;padding:12px 16px;font-family:var(--fm);font-size:12px;color:var(--dark);word-break:break-all;margin-bottom:16px;text-align:left;border:1.5px solid #D0D0D0;}
-    .modal-btns{display:flex;gap:12px;}
-    .btn-modal-cancel{flex:1;padding:13px;border:2px solid var(--neu);background:var(--white);border-radius:10px;font-family:var(--fd);font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);}
-    .btn-modal-copy{flex:2;padding:13px;border:none;background:var(--pm);color:white;border-radius:10px;font-family:var(--fd);font-size:14px;font-weight:700;cursor:pointer;}
-    .btn-modal-copy:hover{background:var(--pd);}
-    .btn-modal-danger{flex:2;padding:13px;border:none;background:var(--red);color:white;border-radius:10px;font-family:var(--fd);font-size:14px;font-weight:700;cursor:pointer;}
+    .modal .modal-icon{font-size:44px;display:block;margin-bottom:14px;}
+    .modal h3{font-family:var(--fd);font-size:19px;font-weight:700;color:var(--dark);margin-bottom:8px;}
+    .modal p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:20px;}
+    .invite-link-box{background:var(--neu);border-radius:10px;padding:12px 14px;font-family:var(--fm);font-size:11px;color:var(--dark);word-break:break-all;margin-bottom:14px;text-align:left;border:1.5px solid #D0D0D0;}
+    .modal-btns{display:flex;gap:10px;}
+    .btn-modal-cancel{flex:1;padding:12px;border:2px solid var(--neu);background:var(--white);border-radius:10px;font-family:var(--fd);font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);}
+    .btn-modal-copy,.btn-modal-confirm{flex:2;padding:12px;border:none;background:var(--pm);color:white;border-radius:10px;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;}
+    .btn-modal-copy:hover,.btn-modal-confirm:hover{background:var(--pd);}
+    .btn-modal-danger{flex:2;padding:12px;border:none;background:var(--red);color:white;border-radius:10px;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;}
     .btn-modal-danger:hover{background:#D32F2F;}
-    @media(max-width:768px){.layout{grid-template-columns:1fr;}.sidebar{position:relative;top:0;height:auto;border-left:none;border-top:1px solid #E0E0E0;}.header{padding:0 16px;}.ocean{padding:20px 16px;}}
+    .btn-modal-warn{flex:2;padding:12px;border:none;background:#FF9800;color:white;border-radius:10px;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;}
+    .btn-modal-warn:hover{background:#E65100;}
+    .form-group{margin-bottom:14px;text-align:left;}
+    .form-group label{display:block;font-family:var(--fd);font-size:12px;font-weight:600;color:var(--dark);margin-bottom:6px;}
+    .form-group textarea{width:100%;padding:10px 12px;border:2px solid var(--neu);border-radius:8px;font-family:var(--fb);font-size:13px;outline:none;resize:none;transition:border-color 0.2s;}
+    .form-group textarea:focus{border-color:var(--pm);}
+    .preview-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px;}
+    .preview-overlay.hidden{display:none;}
+    .preview-content{max-width:90vw;max-height:90vh;position:relative;}
+    .preview-content img{max-width:90vw;max-height:85vh;border-radius:8px;object-fit:contain;}
+    .preview-content video{max-width:90vw;max-height:85vh;border-radius:8px;}
+    .preview-close{position:absolute;top:-40px;right:0;background:rgba(255,255,255,0.15);border:none;color:white;font-size:22px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .preview-close:hover{background:rgba(255,255,255,0.3);}
+    .preview-name{color:rgba(255,255,255,0.7);font-family:var(--fd);font-size:13px;text-align:center;margin-top:10px;}
+    @media(max-width:768px){.layout{grid-template-columns:1fr;}.sidebar{position:relative;top:0;height:auto;border-left:none;border-top:1px solid #E0E0E0;}.header{padding:0 16px;}.ocean{padding:16px;}}
     .hidden{display:none!important;}
   </style>
 </head>
@@ -113,11 +141,14 @@
       <div class="upload-zone" id="upload-zone">
         <span class="upload-icon">📸</span>
         <h3>Drop photos & videos into the ocean</h3>
-        <p>Drag & drop files here, or click to browse. Images and videos only.</p>
+        <p>Drag & drop or click to browse — images and videos only</p>
         <button class="btn-upload" id="upload-btn">Choose Files</button>
         <input type="file" id="file-input" multiple accept="image/*,video/*" style="display:none"/>
+        <div class="upload-progress" id="upload-progress">
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+          <div class="progress-label" id="progress-label">Uploading...</div>
+        </div>
       </div>
-
       <div class="filter-bar">
         <span class="filter-label">Show:</span>
         <button class="filter-btn active" id="filter-all">All</button>
@@ -125,38 +156,32 @@
         <button class="filter-btn" id="filter-video">🎥 Videos</button>
         <button class="filter-btn" id="filter-mine">👤 Mine</button>
       </div>
-
       <div class="files-grid" id="files-grid">
-        <div class="files-empty">
-          <span class="empty-icon">🌊</span>
-          The ocean is empty — be the first to drop something in!
-        </div>
+        <div class="files-empty"><span class="empty-icon">🌊</span>The ocean is empty — be the first to drop something in!</div>
       </div>
     </div>
 
     <aside class="sidebar">
       <div>
-        <div class="sidebar-section-title">🌊 Ocean Pool</div>
-        <div class="pool-bar"><div class="pool-fill" id="pool-fill" style="width:0%"></div></div>
-        <div class="pool-stats">
-          <span id="pool-used">0 MB used</span>
-          <span id="pool-total">0 MB total</span>
-        </div>
-      </div>
-      <div>
         <div class="sidebar-section-title">👥 Members</div>
-        <div id="members-list"><div style="font-size:13px;color:var(--muted);">Loading...</div></div>
+        <div id="members-list"><div style="font-size:12px;color:var(--muted);">Loading...</div></div>
       </div>
-      <div class="done-section" id="done-section">
+      <div class="done-section">
         <h4>✅ Flag as Done</h4>
-        <p>Downloaded everything you need? Flag Done to let the admin know you're ready.</p>
+        <p>Downloaded everything? Flag Done to let the admin know you're ready.</p>
         <button class="btn-done" id="done-btn">I'm Done Downloading ✓</button>
+      </div>
+      <div class="leave-section hidden" id="leave-section">
+        <h4>🚪 Leave Group</h4>
+        <p>Want to leave? Send a request — admin will reach out before approving.</p>
+        <button class="btn-leave" id="leave-btn">Send Leave Request</button>
       </div>
       <div class="admin-section hidden" id="admin-section">
         <h4>⚠️ Dismantle Group</h4>
-        <p>Permanently delete all files and close this group. This cannot be undone.</p>
+        <p>Permanently delete all files and close this group. Cannot be undone.</p>
         <button class="btn-dismantle" id="dismantle-btn" disabled>Dismantle Group</button>
         <div class="dismantle-hint" id="dismantle-hint">Waiting for all members to flag Done...</div>
+        <button class="btn-notify" id="notify-btn">📧 Notify Pending Members</button>
       </div>
     </aside>
   </div>
@@ -168,7 +193,7 @@
     <div class="modal">
       <span class="modal-icon">🔗</span>
       <h3>Invite to Group</h3>
-      <p>Share this link with anyone you want to add to the group.</p>
+      <p>Share this link. Members click it and join automatically after signing in.</p>
       <div class="invite-link-box" id="invite-link-box">Loading...</div>
       <div class="modal-btns">
         <button class="btn-modal-cancel" onclick="closeModals()">Close</button>
@@ -177,12 +202,12 @@
     </div>
   </div>
 
-  <!-- Dismantle Confirm Modal -->
+  <!-- Dismantle Modal -->
   <div class="overlay hidden" id="dismantle-modal">
     <div class="modal">
       <span class="modal-icon">⚠️</span>
       <h3>Dismantle Group?</h3>
-      <p>This will permanently delete all files and close the group for everyone. This cannot be undone.</p>
+      <p>This permanently deletes all files from everyone's Google Drive and closes the group. Cannot be undone.</p>
       <div class="modal-btns">
         <button class="btn-modal-cancel" onclick="closeModals()">Cancel</button>
         <button class="btn-modal-danger" id="confirm-dismantle-btn">Yes, Dismantle Everything</button>
@@ -190,21 +215,51 @@
     </div>
   </div>
 
-  <!-- Global functions accessible from HTML -->
+  <!-- Leave Modal -->
+  <div class="overlay hidden" id="leave-modal">
+    <div class="modal">
+      <span class="modal-icon">🚪</span>
+      <h3>Send Leave Request</h3>
+      <p>The admin will be notified and may reach out before approving your request.</p>
+      <div class="form-group">
+        <label>Reason (optional)</label>
+        <textarea id="leave-reason" rows="3" placeholder="e.g. Already downloaded everything I need..."></textarea>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-modal-cancel" onclick="closeModals()">Cancel</button>
+        <button class="btn-modal-warn" id="confirm-leave-btn">Send Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="preview-overlay hidden" id="preview-overlay" onclick="closePreview(event)">
+    <div class="preview-content">
+      <button class="preview-close" onclick="closeModals()">✕</button>
+      <img id="preview-img" src="" alt="" style="display:none"/>
+      <video id="preview-video" controls style="display:none"></video>
+      <div class="preview-name" id="preview-name"></div>
+    </div>
+  </div>
+
   <script>
     function showInviteModal() { document.getElementById('invite-modal').classList.remove('hidden'); }
-    function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.classList.add('hidden')); }
+    function closeModals() {
+      document.querySelectorAll('.overlay,.preview-overlay').forEach(o => o.classList.add('hidden'));
+      const v = document.getElementById('preview-video');
+      v.pause(); v.src = '';
+    }
+    function closePreview(e) { if (e.target === e.currentTarget) closeModals(); }
     function copyInviteLink() {
       navigator.clipboard.writeText(document.getElementById('invite-link-box').textContent);
       closeModals();
       showToastGlobal('🔗 Invite link copied!');
     }
-    function showToastGlobal(msg) {
+    function showToastGlobal(msg, duration=3000) {
       const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.remove('hidden');
+      t.textContent = msg; t.classList.remove('hidden');
       clearTimeout(window._tt);
-      window._tt = setTimeout(() => t.classList.add('hidden'), 3000);
+      window._tt = setTimeout(() => t.classList.add('hidden'), duration);
     }
   </script>
 
@@ -227,355 +282,260 @@
     };
 
     const BACKEND = "https://dropot.vercel.app";
-    const app  = initializeApp(firebaseConfig);
+    const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db   = getFirestore(app);
+    const db = getFirestore(app);
 
-    let currentUser  = null;
-    let groupId      = null;
-    let groupData    = null;
-    let allFiles     = [];
-    let activeFilter = 'all';
-    let driveToken   = null;
+    let currentUser = null, groupId = null, groupData = null;
+    let allFiles = [], activeFilter = 'all', driveToken = null;
 
-    const params    = new URLSearchParams(window.location.search);
-    groupId         = params.get('id');
+    const params = new URLSearchParams(window.location.search);
+    groupId = params.get('id');
     const isJoining = params.get('join') === 'true';
     if (!groupId) window.location.href = 'dashboard.html';
 
-    // ── Auth ─────────────────────────────────────────
     onAuthStateChanged(auth, async (user) => {
       if (!user) { window.location.href = 'index.html'; return; }
       currentUser = user;
-      driveToken  = sessionStorage.getItem("dropot_drive_token");
-      if (!driveToken) { window.location.href = 'index.html'; return; }
-
+      driveToken = sessionStorage.getItem("dropot_drive_token");
+      if (!driveToken) {
+        sessionStorage.setItem("dropot_invite_id", groupId);
+        window.location.href = 'index.html'; return;
+      }
       await loadGroup();
       if (isJoining) await joinGroup();
       listenToFiles();
-
-      // File input events
-      document.getElementById('file-input').addEventListener('change', (e) => {
-        uploadFiles(Array.from(e.target.files));
-        e.target.value = '';
-      });
-      document.getElementById('upload-btn').addEventListener('click', () => {
-        document.getElementById('file-input').click();
-      });
-      document.getElementById('upload-zone').addEventListener('dragover', (e) => {
-        e.preventDefault();
-        e.currentTarget.classList.add('dragover');
-      });
-      document.getElementById('upload-zone').addEventListener('dragleave', (e) => {
-        e.currentTarget.classList.remove('dragover');
-      });
-      document.getElementById('upload-zone').addEventListener('drop', (e) => {
-        e.preventDefault();
-        e.currentTarget.classList.remove('dragover');
-        uploadFiles(Array.from(e.dataTransfer.files)
-          .filter(f => f.type.startsWith('image') || f.type.startsWith('video')));
-      });
-
-      // Filter buttons
-      document.getElementById('filter-all').addEventListener('click',   (e) => setFilter('all', e.target));
-      document.getElementById('filter-image').addEventListener('click', (e) => setFilter('image', e.target));
-      document.getElementById('filter-video').addEventListener('click', (e) => setFilter('video', e.target));
-      document.getElementById('filter-mine').addEventListener('click',  (e) => setFilter('mine', e.target));
-
-      // Done button
-      document.getElementById('done-btn').addEventListener('click', flagDone);
-
-      // Dismantle button
-      document.getElementById('dismantle-btn').addEventListener('click', () => {
-        document.getElementById('dismantle-modal').classList.remove('hidden');
-      });
-      document.getElementById('confirm-dismantle-btn').addEventListener('click', dismantleGroup);
+      attachListeners();
     });
 
-    // ── Load Group ───────────────────────────────────
+    function attachListeners() {
+      document.getElementById('file-input').addEventListener('change', (e) => { uploadFiles(Array.from(e.target.files)); e.target.value=''; });
+      document.getElementById('upload-btn').addEventListener('click', () => document.getElementById('file-input').click());
+      const zone = document.getElementById('upload-zone');
+      zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('dragover'); });
+      zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+      zone.addEventListener('drop', (e) => { e.preventDefault(); zone.classList.remove('dragover'); uploadFiles(Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image')||f.type.startsWith('video'))); });
+      document.getElementById('filter-all').addEventListener('click',   (e) => setFilter('all',e.target));
+      document.getElementById('filter-image').addEventListener('click', (e) => setFilter('image',e.target));
+      document.getElementById('filter-video').addEventListener('click', (e) => setFilter('video',e.target));
+      document.getElementById('filter-mine').addEventListener('click',  (e) => setFilter('mine',e.target));
+      document.getElementById('done-btn').addEventListener('click', flagDone);
+      document.getElementById('leave-btn')?.addEventListener('click', () => document.getElementById('leave-modal').classList.remove('hidden'));
+      document.getElementById('confirm-leave-btn').addEventListener('click', sendLeaveRequest);
+      document.getElementById('dismantle-btn').addEventListener('click', () => document.getElementById('dismantle-modal').classList.remove('hidden'));
+      document.getElementById('confirm-dismantle-btn').addEventListener('click', dismantleGroup);
+      document.getElementById('notify-btn')?.addEventListener('click', notifyPending);
+    }
+
     async function loadGroup() {
-      const docSnap = await getDoc(doc(db, 'groups', groupId));
-      if (!docSnap.exists()) { alert('Group not found.'); window.location.href = 'dashboard.html'; return; }
-      groupData = docSnap.data();
+      const snap = await getDoc(doc(db,'groups',groupId));
+      if (!snap.exists()) { alert('Group not found.'); window.location.href='dashboard.html'; return; }
+      groupData = snap.data();
       document.getElementById('header-group-name').textContent = groupData.name;
       document.title = `Dropot — ${groupData.name}`;
-      if (groupData.adminId === currentUser.uid) {
-        document.getElementById('admin-section').classList.remove('hidden');
-      }
+      const isAdmin = groupData.adminId === currentUser.uid;
+      if (isAdmin) document.getElementById('admin-section').classList.remove('hidden');
+      else document.getElementById('leave-section').classList.remove('hidden');
       renderMembers();
       document.getElementById('invite-link-box').textContent =
-        `${window.location.origin}${window.location.pathname.split('group.html')[0]}group.html?id=${groupId}&join=true`;
+        `${location.origin}${location.pathname.split('group.html')[0]}index.html?id=${groupId}`;
     }
 
-    // ── Join Group ───────────────────────────────────
     async function joinGroup() {
-      if (groupData.memberIds.includes(currentUser.uid)) return;
-      const newMember = { uid: currentUser.uid, name: currentUser.displayName || currentUser.email, email: currentUser.email, done: false, joinedAt: new Date().toISOString() };
-      await updateDoc(doc(db, 'groups', groupId), {
-        memberIds: arrayUnion(currentUser.uid),
-        members:   arrayUnion(newMember)
-      });
-      groupData.members.push(newMember);
-      groupData.memberIds.push(currentUser.uid);
+      if (groupData.memberIds?.includes(currentUser.uid)) return;
+      const m = { uid: currentUser.uid, name: currentUser.displayName||currentUser.email, email: currentUser.email, done: false, joinedAt: new Date().toISOString() };
+      await updateDoc(doc(db,'groups',groupId), { memberIds: arrayUnion(currentUser.uid), members: arrayUnion(m) });
+      groupData.members.push(m); groupData.memberIds.push(currentUser.uid);
       renderMembers();
       showToastGlobal('✅ Joined group successfully!');
-      window.history.replaceState({}, '', `group.html?id=${groupId}`);
+      history.replaceState({},'',`group.html?id=${groupId}`);
     }
 
-    // ── Render Members ───────────────────────────────
     function renderMembers() {
-      const list   = document.getElementById('members-list');
+      const list = document.getElementById('members-list');
       list.innerHTML = '';
-      let allDone  = true;
+      let allDone = true;
       groupData.members.forEach(m => {
         if (!m.done) allDone = false;
-        const isMe    = m.uid === currentUser.uid;
-        const isAdmin = m.uid === groupData.adminId;
         list.innerHTML += `
           <div class="member-item">
             <div class="member-avatar" style="background:${strColor(m.name)}">${m.name.charAt(0).toUpperCase()}</div>
             <div class="member-info">
-              <div class="member-name">${m.name}${isMe?' (you)':''}</div>
-              <div class="member-role">${isAdmin?'👑 Admin':'Member'}</div>
+              <div class="member-name">${m.name}${m.uid===currentUser.uid?' (you)':''}</div>
+              <div class="member-role">${m.uid===groupData.adminId?'👑 Admin':'Member'}${m.leaveRequested?' · 🚪 Wants to leave':''}</div>
             </div>
             <div class="done-flag ${m.done?'green':''}">${m.done?'✅':'⏳'}</div>
           </div>`;
       });
-      const me = groupData.members.find(m => m.uid === currentUser.uid);
-      if (me?.done) {
-        const btn = document.getElementById('done-btn');
-        btn.textContent = "✅ You've flagged Done";
-        btn.classList.add('flagged');
-        btn.disabled = true;
-      }
+      const me = groupData.members.find(m => m.uid===currentUser.uid);
+      if (me?.done) { const b=document.getElementById('done-btn'); b.textContent="✅ You've flagged Done"; b.classList.add('flagged'); b.disabled=true; }
+      if (me?.leaveRequested) { const b=document.getElementById('leave-btn'); if(b){b.textContent='⏳ Leave Request Sent';b.classList.add('requested');b.disabled=true;} }
       updateDismantleBtn(allDone);
     }
 
     function updateDismantleBtn(allDone) {
       if (groupData.adminId !== currentUser.uid) return;
-      const btn  = document.getElementById('dismantle-btn');
-      const hint = document.getElementById('dismantle-hint');
-      if (allDone) {
-        btn.disabled   = false;
-        hint.textContent = '🟢 All members done — you can dismantle!';
-        hint.style.color = '#2E7D32';
-      } else {
-        btn.disabled   = true;
-        const pending  = groupData.members.filter(m => !m.done).length;
-        hint.textContent = `⏳ ${pending} member${pending>1?'s':''} still pending...`;
-      }
+      const btn=document.getElementById('dismantle-btn'), hint=document.getElementById('dismantle-hint');
+      if (allDone) { btn.disabled=false; hint.textContent='🟢 All members done — you can dismantle!'; hint.style.color='#2E7D32'; }
+      else { btn.disabled=true; const p=groupData.members.filter(m=>!m.done).length; hint.textContent=`⏳ ${p} member${p>1?'s':''} still pending...`; }
     }
 
-    // ── Listen to Files ──────────────────────────────
     function listenToFiles() {
-      onSnapshot(collection(db, 'groups', groupId, 'files'), (snap) => {
+      onSnapshot(collection(db,'groups',groupId,'files'), (snap) => {
         allFiles = [];
-        snap.forEach(d => allFiles.push({ id: d.id, ...d.data() }));
-        allFiles.sort((a, b) => (b.uploadedAt?.seconds||0) - (a.uploadedAt?.seconds||0));
+        snap.forEach(d => allFiles.push({id:d.id,...d.data()}));
+        allFiles.sort((a,b)=>(b.uploadedAt?.seconds||0)-(a.uploadedAt?.seconds||0));
         renderFiles();
-        updatePoolStats();
       });
     }
 
-    // ── Render Files ─────────────────────────────────
     function renderFiles() {
       const grid = document.getElementById('files-grid');
-      let filtered = allFiles;
-      if (activeFilter === 'image') filtered = allFiles.filter(f => f.type?.startsWith('image'));
-      if (activeFilter === 'video') filtered = allFiles.filter(f => f.type?.startsWith('video'));
-      if (activeFilter === 'mine')  filtered = allFiles.filter(f => f.uploadedBy === currentUser.uid);
-      if (!filtered.length) {
-        grid.innerHTML = `<div class="files-empty"><span class="empty-icon">🌊</span>${activeFilter==='all'?'The ocean is empty — be the first to drop something in!':'No files match this filter.'}</div>`;
-        return;
-      }
-      grid.innerHTML = filtered.map(f => {
-        const isOwner = f.uploadedBy === currentUser.uid;
-        const thumb   = f.type?.startsWith('image')
-          ? `<img src="${f.thumbUrl || f.url}" alt="${f.name}" loading="lazy"/>`
-          : `<span style="font-size:42px">🎥</span>`;
-        return `
-          <div class="file-card">
-            <div class="file-thumb">${thumb}</div>
-            <div class="file-info">
-              <div class="file-name" title="${f.name}">${f.name}</div>
-              <div class="file-meta">${formatSize(f.size)} · ${f.uploaderName||'Unknown'}</div>
-            </div>
-            <div class="file-actions">
-              <button class="btn-dl" onclick="window.open('${f.viewUrl||f.url}','_blank')">⬇ Download</button>
-              ${isOwner?`<button class="btn-del" data-fid="${f.id}" data-dfid="${f.driveFileId||''}">✕</button>`:''}
-            </div>
-          </div>`;
+      let f = allFiles;
+      if (activeFilter==='image') f=allFiles.filter(x=>x.type?.startsWith('image'));
+      if (activeFilter==='video') f=allFiles.filter(x=>x.type?.startsWith('video'));
+      if (activeFilter==='mine')  f=allFiles.filter(x=>x.uploadedBy===currentUser.uid);
+      if (!f.length) { grid.innerHTML=`<div class="files-empty"><span class="empty-icon">🌊</span>${activeFilter==='all'?'The ocean is empty — be the first to drop something in!':'No files match this filter.'}</div>`; return; }
+      grid.innerHTML = f.map(x => {
+        const isOwner = x.uploadedBy===currentUser.uid;
+        const isImg   = x.type?.startsWith('image');
+        const thumb   = isImg ? `<img src="${x.thumbUrl||x.url}" alt="${x.name}" loading="lazy"/>` : `<span style="font-size:38px">🎥</span><div class="play-icon">▶</div>`;
+        return `<div class="file-card">
+          <div class="file-thumb" data-type="${x.type}" data-url="${x.url}" data-name="${x.name}">${thumb}</div>
+          <div class="file-info"><div class="file-name" title="${x.name}">${x.name}</div><div class="file-meta">${fmt(x.size)} · ${x.uploaderName||'Unknown'}</div></div>
+          <div class="file-actions">
+            <button class="btn-dl" data-dfid="${x.driveFileId||''}" data-name="${x.name}">⬇ Download</button>
+            ${isOwner?`<button class="btn-del" data-fid="${x.id}" data-dfid="${x.driveFileId||''}">✕</button>`:''}
+          </div></div>`;
       }).join('');
-
-      // Attach delete listeners
-      grid.querySelectorAll('.btn-del').forEach(btn => {
-        btn.addEventListener('click', () => deleteFile(btn.dataset.fid, btn.dataset.dfid));
-      });
+      grid.querySelectorAll('.file-thumb').forEach(t => t.addEventListener('click', () => previewFile(t.dataset.type, t.dataset.url, t.dataset.name)));
+      grid.querySelectorAll('.btn-dl').forEach(b => b.addEventListener('click', () => downloadFile(b.dataset.dfid, b.dataset.name, b)));
+      grid.querySelectorAll('.btn-del').forEach(b => b.addEventListener('click', () => deleteFile(b.dataset.fid, b.dataset.dfid)));
     }
 
-    // ── Upload directly to Google Drive from browser ─────
+    function previewFile(type, url, name) {
+      const img=document.getElementById('preview-img'), vid=document.getElementById('preview-video');
+      document.getElementById('preview-name').textContent = name;
+      if (type?.startsWith('image')) { img.src=url; img.style.display='block'; vid.style.display='none'; vid.src=''; }
+      else { vid.src=url; vid.style.display='block'; img.style.display='none'; img.src=''; }
+      document.getElementById('preview-overlay').classList.remove('hidden');
+    }
+
     async function uploadFiles(files) {
       if (!files.length) return;
-      for (const file of files) {
-        showToastGlobal(`⬆ Uploading ${file.name}...`);
+      const zone=document.getElementById('upload-zone'), prog=document.getElementById('upload-progress');
+      const fill=document.getElementById('progress-fill'), lbl=document.getElementById('progress-label');
+      zone.classList.add('uploading'); prog.classList.add('show');
+      for (let i=0; i<files.length; i++) {
+        const file=files[i];
+        fill.style.width = Math.round((i/files.length)*100)+'%';
+        lbl.textContent  = `Uploading ${i+1} of ${files.length}: ${file.name}`;
         try {
-          // Step 1 — Get or create group folder in Drive
-          const folderId = await getOrCreateFolder();
-          if (!folderId) { showToastGlobal('❌ Could not access Drive folder'); continue; }
-
-          // Step 2 — Upload file directly to Drive (multipart)
-          const metadata = JSON.stringify({
-            name:          file.name,
-            parents:       [folderId],
-            description:   `dropot-group:${groupId}`,
-            appProperties: { dropotGroupId: groupId }
-          });
+          const fid = await getOrCreateFolder();
+          if (!fid) { showToastGlobal('❌ Could not access Drive folder'); continue; }
+          const meta = JSON.stringify({ name:file.name, parents:[fid], description:`dropot-group:${groupId}`, appProperties:{dropotGroupId:groupId} });
           const form = new FormData();
-          form.append('metadata', new Blob([metadata], { type: 'application/json' }));
+          form.append('metadata', new Blob([meta],{type:'application/json'}));
           form.append('file', file);
-
-          const res = await fetch(
-            'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name',
-            {
-              method:  'POST',
-              headers: { 'Authorization': `Bearer ${driveToken}` },
-              body:    form
-            }
-          );
+          const res  = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name',
+            {method:'POST', headers:{'Authorization':`Bearer ${driveToken}`}, body:form});
           const data = await res.json();
-          if (data.error) { showToastGlobal(`❌ Upload failed: ${data.error.message}`); continue; }
-
-          // Step 3 — Make file readable by anyone with link
-          await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
-            method:  'POST',
-            headers: { 'Authorization': `Bearer ${driveToken}`, 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ role: 'reader', type: 'anyone' })
+          if (data.error) { showToastGlobal(`❌ ${data.error.message}`); continue; }
+          await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`,
+            {method:'POST', headers:{'Authorization':`Bearer ${driveToken}`,'Content-Type':'application/json'}, body:JSON.stringify({role:'reader',type:'anyone'})});
+          await addDoc(collection(db,'groups',groupId,'files'), {
+            name:file.name, url:`https://drive.google.com/uc?id=${data.id}&export=download`,
+            viewUrl:`https://drive.google.com/file/d/${data.id}/view`,
+            thumbUrl: file.type.startsWith('image')?`https://drive.google.com/thumbnail?id=${data.id}&sz=w400`:null,
+            driveFileId:data.id, type:file.type, size:file.size,
+            uploadedBy:currentUser.uid, uploaderName:currentUser.displayName||currentUser.email,
+            uploadedAt:serverTimestamp()
           });
-
-          // Step 4 — Save metadata to Firestore
-          await addDoc(collection(db, 'groups', groupId, 'files'), {
-            name:         file.name,
-            url:          `https://drive.google.com/uc?id=${data.id}&export=download`,
-            viewUrl:      `https://drive.google.com/file/d/${data.id}/view`,
-            thumbUrl:     `https://drive.google.com/thumbnail?id=${data.id}&sz=w400`,
-            driveFileId:  data.id,
-            type:         file.type,
-            size:         file.size,
-            uploadedBy:   currentUser.uid,
-            uploaderName: currentUser.displayName || currentUser.email,
-            uploadedAt:   serverTimestamp()
-          });
-          showToastGlobal(`✅ ${file.name} uploaded!`);
         } catch(e) { console.error(e); showToastGlobal(`❌ Failed: ${file.name}`); }
       }
+      fill.style.width='100%'; lbl.textContent=`✅ ${files.length} file${files.length>1?'s':''} uploaded!`;
+      setTimeout(()=>{ zone.classList.remove('uploading'); prog.classList.remove('show'); fill.style.width='0%'; }, 2000);
     }
 
-    // Get or create Dropot-{groupId} folder in Drive
     async function getOrCreateFolder() {
-      const folderName = `Dropot-${groupId}`;
-      const headers    = { 'Authorization': `Bearer ${driveToken}` };
-
-      // Search for existing
-      const q   = encodeURIComponent(`name='${folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);
-      const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`, { headers });
-      const data = await res.json();
-      if (data.files?.length) return data.files[0].id;
-
-      // Create new folder
-      const create = await fetch('https://www.googleapis.com/drive/v3/files', {
-        method:  'POST',
-        headers: { ...headers, 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ name: folderName, mimeType: 'application/vnd.google-apps.folder' })
-      });
-      const folder = await create.json();
-      return folder.id;
+      const name=`Dropot — ${groupData.name} (${currentUser.displayName||currentUser.email})`;
+      const h={'Authorization':`Bearer ${driveToken}`};
+      const q=encodeURIComponent(`name='${name}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);
+      const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,{headers:h});
+      const d=await r.json();
+      if (d.files?.length) return d.files[0].id;
+      const c=await fetch('https://www.googleapis.com/drive/v3/files',{method:'POST',headers:{...h,'Content-Type':'application/json'},body:JSON.stringify({name,mimeType:'application/vnd.google-apps.folder',description:`Dropot shared media — ${groupData.name}`})});
+      return (await c.json()).id;
     }
 
-    // ── Delete ───────────────────────────────────────
-    async function deleteFile(fileId, driveFileId) {
+    async function downloadFile(driveFileId, fileName, btn) {
+      if (!driveFileId) { showToastGlobal('❌ File ID missing'); return; }
+      btn.textContent='⏳'; btn.classList.add('downloading');
+      try {
+        const res=await fetch(`https://www.googleapis.com/drive/v3/files/${driveFileId}?alt=media`,{headers:{'Authorization':`Bearer ${driveToken}`}});
+        const blob=await res.blob();
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a'); a.href=url; a.download=fileName;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToastGlobal(`✅ ${fileName} downloaded!`);
+      } catch(e) { console.error(e); showToastGlobal('❌ Download failed'); }
+      btn.textContent='⬇ Download'; btn.classList.remove('downloading');
+    }
+
+    async function deleteFile(fid, dfid) {
       if (!confirm('Delete this file?')) return;
       try {
-        if (driveFileId) {
-          await fetch(`${BACKEND}/api/drive/delete`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${driveToken}` },
-            body: JSON.stringify({ fileId: driveFileId })
-          });
-        }
-        await deleteDoc(doc(db, 'groups', groupId, 'files', fileId));
+        if (dfid) await fetch(`${BACKEND}/api/drive/delete`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${driveToken}`},body:JSON.stringify({fileId:dfid})});
+        await deleteDoc(doc(db,'groups',groupId,'files',fid));
         showToastGlobal('🗑 File deleted');
       } catch(e) { console.error(e); showToastGlobal('Error deleting file'); }
     }
 
-    // ── Flag Done ────────────────────────────────────
     async function flagDone() {
-      const members = groupData.members.map(m => m.uid === currentUser.uid ? {...m, done: true} : m);
-      await updateDoc(doc(db, 'groups', groupId), { members });
-      groupData.members = members;
-      const btn = document.getElementById('done-btn');
-      btn.textContent = "✅ You've flagged Done";
-      btn.classList.add('flagged');
-      btn.disabled = true;
-      renderMembers();
-      showToastGlobal("✅ You've flagged Done!");
+      const members=groupData.members.map(m=>m.uid===currentUser.uid?{...m,done:true}:m);
+      await updateDoc(doc(db,'groups',groupId),{members});
+      groupData.members=members;
+      const b=document.getElementById('done-btn'); b.textContent="✅ You've flagged Done"; b.classList.add('flagged'); b.disabled=true;
+      renderMembers(); showToastGlobal("✅ You've flagged Done!");
     }
 
-    // ── Dismantle ────────────────────────────────────
-    async function dismantleGroup() {
-      closeModals();
-      showToastGlobal('🔥 Dismantling group...');
+    async function sendLeaveRequest() {
+      const reason=document.getElementById('leave-reason').value.trim();
+      const members=groupData.members.map(m=>m.uid===currentUser.uid?{...m,leaveRequested:true,leaveReason:reason}:m);
+      await updateDoc(doc(db,'groups',groupId),{members});
+      groupData.members=members; closeModals();
+      const b=document.getElementById('leave-btn'); if(b){b.textContent='⏳ Leave Request Sent';b.classList.add('requested');b.disabled=true;}
+      renderMembers(); showToastGlobal('🚪 Leave request sent to admin!');
+    }
+
+    async function notifyPending() {
+      const pending=groupData.members.filter(m=>!m.done);
+      if (!pending.length) { showToastGlobal('✅ All members are already done!'); return; }
+      showToastGlobal(`📧 Notifying ${pending.length} member${pending.length>1?'s':''}...`);
       try {
-        const filesSnap = await getDocs(collection(db, 'groups', groupId, 'files'));
-        for (const f of filesSnap.docs) {
-          if (f.data().driveFileId) {
-            try {
-              await fetch(`${BACKEND}/api/drive/delete`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${driveToken}` },
-                body: JSON.stringify({ fileId: f.data().driveFileId })
-              });
-            } catch(e) {}
-          }
+        await fetch(`${BACKEND}/api/notify/pending`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${driveToken}`},body:JSON.stringify({groupName:groupData.name,groupId,adminName:currentUser.displayName,pendingMembers:pending.map(m=>({name:m.name,email:m.email}))})});
+        showToastGlobal('✅ Notifications sent!');
+      } catch(e) { console.error(e); showToastGlobal('❌ Could not send notifications'); }
+    }
+
+    async function dismantleGroup() {
+      closeModals(); showToastGlobal('🔥 Dismantling group...', 10000);
+      try {
+        const snap=await getDocs(collection(db,'groups',groupId,'files'));
+        for (const f of snap.docs) {
+          if (f.data().driveFileId) { try { await fetch(`${BACKEND}/api/drive/delete`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${driveToken}`},body:JSON.stringify({fileId:f.data().driveFileId})}); } catch(e){} }
           await deleteDoc(f.ref);
         }
-        await deleteDoc(doc(db, 'groups', groupId));
+        await deleteDoc(doc(db,'groups',groupId));
         showToastGlobal('✅ Group dismantled. All files deleted.');
-        setTimeout(() => window.location.href = 'dashboard.html', 2000);
+        setTimeout(()=>window.location.href='dashboard.html', 2000);
       } catch(e) { console.error(e); showToastGlobal('Error dismantling. Try again.'); }
     }
 
-    // ── Filter ───────────────────────────────────────
-    function setFilter(type, btn) {
-      activeFilter = type;
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderFiles();
-    }
-
-    // ── Pool Stats ───────────────────────────────────
-    function updatePoolStats() {
-      const total = groupData.members.length * 15 * 1024 * 1024 * 1024;
-      const used  = allFiles.reduce((s, f) => s + (f.size||0), 0);
-      const pct   = Math.min((used/total)*100, 100);
-      document.getElementById('pool-fill').style.width = pct + '%';
-      document.getElementById('pool-used').textContent = formatSize(used) + ' used';
-      document.getElementById('pool-total').textContent = formatSize(total) + ' total';
-    }
-
-    // ── Helpers ──────────────────────────────────────
-    function formatSize(bytes) {
-      if (!bytes) return '0 B';
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
-      if (bytes < 1024*1024*1024) return (bytes/1024/1024).toFixed(1) + ' MB';
-      return (bytes/1024/1024/1024).toFixed(2) + ' GB';
-    }
-    function strColor(str) {
-      let h = 0;
-      for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h<<5)-h);
-      const colors = ['#2FA084','#1F6F5F','#6FCF97','#0099FF','#9B59B6','#E67E22','#E74C3C'];
-      return colors[Math.abs(h) % colors.length];
-    }
+    function setFilter(type,btn) { activeFilter=type; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderFiles(); }
+    function fmt(b) { if(!b)return'0 B'; if(b<1024)return b+' B'; if(b<1048576)return(b/1024).toFixed(1)+' KB'; if(b<1073741824)return(b/1048576).toFixed(1)+' MB'; return(b/1073741824).toFixed(2)+' GB'; }
+    function strColor(s) { let h=0; for(let i=0;i<s.length;i++)h=s.charCodeAt(i)+((h<<5)-h); return['#2FA084','#1F6F5F','#6FCF97','#0099FF','#9B59B6','#E67E22','#E74C3C'][Math.abs(h)%7]; }
   </script>
 </body>
 </html>
